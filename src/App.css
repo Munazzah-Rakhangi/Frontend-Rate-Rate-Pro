@@ -1,38 +1,176 @@
-.App {
+/* Apply the Liberation Mono font */
+body {
+  background-color: #cbe3ff;
+  font-family: 'Liberation Mono', monospace;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.container {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  padding: 20px;
+  width: 100%;
+  height: 100vh; /* Make the container take the full height of the viewport */
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  position: relative;
+  overflow: hidden; /* Prevent inner scrolling */
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #2e2e2e;
+  margin-bottom: 5px; /* Decrease margin below the heading */
+  margin-top: -65px; /* Shift the heading upwards by reducing top margin */
+}
+
+p {
+  font-size: 1.2rem;
+  color: #2e2e2e;
+  margin-top: 15px; /* Reduce the space above the paragraph */
+  font-style: italic;
+}
+
+/* Thumbs-up image styling */
+.thumbs-up {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+  margin: 10px 0; /* Shift the image upwards by reducing the margin */
+}
+
+
+/* Add the following styling for the sticker at the top-left corner */
+.sticker-top-left {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  width: 220px;
+  height: 220px;
+  z-index: 1; /* Ensure it stays on top of other elements */
+}
+
+/* Search Bar Styling */
+.search-bar {
+  position: relative; /* To position the icon inside the search bar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.search-bar input {
+  width: 350px;
+  padding: 8px 40px 8px 20px; /* Add padding to make space for the icon */
+  font-size: 1rem;
+  background-color: #f0f0f0; /* Light gray background */
+  border-radius: 50px;
+  border: 2px solid #ccc; /* Subtle gray border */
+  color: #333; /* Darker text color */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effects */
+}
+
+.search-bar input::placeholder {
+  color: #888; /* Light gray for the placeholder text */
+}
+
+.search-bar input:hover, .search-bar input:focus {
+  border-color: #7FA1C3; /* Change border color on hover */
+  box-shadow: 0 0 8px rgba(106, 154, 176, 0.5); /* Add subtle shadow effect */
+  background-color: #e6e6e6; /* Slightly darker gray on hover/focus */
+}
+
+.search-bar img {
+  position: absolute;
+  right: 15px; /* Position the icon inside the search bar */
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.icon {
+  width: 50px;
+}
+
+.rating-icons {
+  margin-bottom: 20px; /* Adjusted margin to fit within the page */
+}
+
+.login-buttons {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Login and Signup Button Styles */
+.login-buttons button {
+  background-color: black;
   color: white;
+  border: none;
+  padding: 10px 30px; /* Adjust padding for a more prominent button size */
+  border-radius: 50px; /* Fully rounded (oval) shape */
+  font-size: 1.2rem; /* Slightly increase the font size */
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover effects */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px; /* Adjust height to maintain oval shape */
 }
 
-.App-link {
-  color: #61dafb;
+.login-buttons button:hover {
+  transform: scale(1.1); /* Enlarge slightly on hover */
+  background-color: #555; /* Darker background on hover */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Apply the same hover effect as social media icons */
+.login-buttons button:active {
+  transform: scale(1.05); /* Slightly smaller scaling on active (clicked) state */
+}
+
+
+/* Footer links positioned at the bottom left */
+.footer-links {
+  position: absolute;  /* Absolute position to place it at a fixed location */
+  bottom: 50px;        /* Stick to the bottom of the viewport */
+  left: 20px;          /* Align to the left side of the viewport */
+  font-size: 0.8rem;   /* Adjust font size if necessary */
+  color: #000000;
+}
+
+/* Hover effect for Help, Terms, and Privacy Policy links */
+.footer-links a {
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #3559E0; /* Change color to blue on hover */
+  text-decoration: underline; /* Add underline on hover */
+}
+
+/* Footer icons positioned at the bottom right */
+.footer-icons {
+  position: absolute;  /* Absolute positioning */
+  bottom: 1px;        /* Stick to the bottom of the page */
+  right: -900px;         /* Align to the right side */
+  display: flex;       /* Display icons in a row */
+  gap: 15px;           /* Space between icons */
+}
+
+.footer-icons img {
+  width: 30px;  /* Increase the width by 2px */
+  height: 30px; /* Increase the height by 2px */
+  transition: transform 0.3s ease, filter 0.3s ease; /* Add smooth transition for hover effect */
+}
+
+/* Hover effect for the social media icons */
+.footer-icons img:hover {
+  transform: scale(1.2); /* Slightly enlarge the icons on hover */
+  filter: brightness(1.2); /* Increase brightness for the hover effect */
 }
