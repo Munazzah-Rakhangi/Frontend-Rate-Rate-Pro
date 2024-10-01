@@ -1,24 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 import LoginPage from './LoginPage';  // Import the LoginPage component
+import ForgotPasswordPage from './ForgotPasswordPage'; // Import ForgotPasswordPage component
 
 const App = () => {
     const navigate = useNavigate();  // This hook will help navigate between pages
 
     const handleLoginClick = () => {
-        navigate('/login');  // Navigate to the Login page
+        navigate('/login');  // This will navigate to the Login page
     };
 
     const handleSignupClick = () => {
-        navigate('/signup');  // Navigate to the Signup page
+        navigate('/signup');  // Navigate to signup page
     };
 
     return (
         <div className="container">
             <div className="login-buttons">
                 <button className="login-btn" onClick={handleLoginClick}>Login</button>
-                <button className="signup-btn" onClick={handleSignupClick}>SignUp</button>  {/* Add Signup Click Handler */}
+                <button className="signup-btn" onClick={handleSignupClick}>SignUp</button> {/* Add onClick here */}
             </div>
 
             {/* Add the sticker at the top-left corner */}
