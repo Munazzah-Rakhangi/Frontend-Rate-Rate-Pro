@@ -114,6 +114,7 @@ p {
   padding: 10px 30px; /* Adjust padding for a more prominent button size */
   border-radius: 50px; /* Fully rounded (oval) shape */
   font-size: 1.2rem; /* Slightly increase the font size */
+  font-family: 'Liberation Mono', monospace; /* Apply Liberation Mono font */
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover effects */
   display: flex;

@@ -1,0 +1,163 @@
+/* General styling for the container */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f9ecec; /* Soft pink background */
+    font-family: 'Liberation Mono', monospace; /* Apply Liberation Mono font */
+    padding: 20px;
+}
+
+/* Title styling */
+.login-title {
+    font-size: 2.5rem;
+    color: #060505;
+    margin-bottom: 20px;
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+}
+
+/* Google login button */
+.google-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px; /* Decrease padding for a smaller button size */
+    background-color: white;
+    border: 2px solid black; /* Black border */
+    border-radius: 30px;
+    font-size: 1rem; /* Slightly reduce font size */
+    cursor: pointer;
+    margin-bottom: 20px;
+    width: 240px; /* Decrease width to make the button smaller */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.google-icon {
+    width: 20px; /* Adjust the icon size to fit the smaller button */
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* Hover effect */
+.google-login-btn:hover {
+    transform: scale(1.1); /* Enlarge slightly on hover */
+    background-color: #f0f0f0; /* Light gray background on hover */
+}
+
+
+/* Divider between Google login and email login */
+.divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px 0;
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+}
+
+.divider-text {
+    font-size: 0.9rem;
+    color: black; /* Divider text in black */
+}
+
+/* Divider lines */
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid black; /* Black divider */
+}
+
+/* Ensure that the form layout is vertical */
+.login-form {
+    display: flex;
+    flex-direction: column; /* Stacks the input fields vertically */
+    align-items: center;    /* Center-align the fields */
+    width: 100%;
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+}
+
+/* Email and Password fields */
+.login-input {
+    width: 280px;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 2px solid black; /* Black border */
+    font-size: 1rem;
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for border changes */
+}
+
+/* Remove blue highlight and add light gray on focus */
+.login-input:focus {
+    border-color: lightgray; /* Change border to light gray on focus */
+    box-shadow: 0 0 5px rgba(211, 211, 211, 0.5); /* Optional: subtle shadow for visual feedback */
+    outline: none; /* Remove default blue outline */
+}
+
+
+/* Forgot password link */
+.forgot-password-link {
+    display: block;
+    text-align: center; /* Center the link */
+    font-size: 0.9rem;
+    color: #007bff;
+    text-decoration: none;
+    margin: 10px 0; /* Add some margin above and below the link */
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Continue button */
+.continue-btn {
+    width: 280px;
+    padding: 12px 0;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Add smooth transition for hover effects */
+}
+
+/* Continue button hover effect */
+.continue-btn:hover {
+    transform: scale(1.1); /* Enlarge slightly on hover */
+    background-color: black; /* Keep the background black on hover */
+}
+
+.continue-btn:active {
+    transform: scale(1.05); /* Slightly smaller scaling on active (clicked) state */
+}
+
+
+/* Signup text */
+.signup-text {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #2e2e2e;
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+    font-style: normal; /* Ensure the text is not italic */
+}
+
+.signup-link {
+    color: #007bff;
+    text-decoration: none;
+    font-family: 'Liberation Mono', monospace; /* Explicit font family */
+    font-style: normal; /* Ensure the link is not italic */
+}
+
+.signup-link:hover {
+    text-decoration: underline;
+}

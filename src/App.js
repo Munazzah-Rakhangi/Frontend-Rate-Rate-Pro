@@ -1,11 +1,19 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import './App.css';
+import LoginPage from './LoginPage';  // Import the LoginPage component
 
 const App = () => {
+    const navigate = useNavigate();  // This hook will help navigate between pages
+
+    const handleLoginClick = () => {
+        navigate('/login');  // This will navigate to the Login page
+    };
+
     return (
         <div className="container">
             <div className="login-buttons">
-                <button className="login-btn">Login</button>
+                <button className="login-btn" onClick={handleLoginClick}>Login</button>
                 <button className="signup-btn">SignUp</button>
             </div>
 
@@ -17,7 +25,7 @@ const App = () => {
             <p>Enter the name of your professor or department and start rating.</p>
 
             {/* Thumbs up image inserted here */}
-            <img src="/images/thumps_up.png" alt="Thumbs Up" className="thumbs-up" />
+            <img src="/images/thumbs_up.png" alt="Thumbs Up" className="thumbs-up" />
 
             <div className="search-bar">
                 <input type="text" placeholder="Search for professor or department....." />
