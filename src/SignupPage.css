@@ -1,17 +1,17 @@
 /* General styling for the container */
-.login-container {
+.signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f9ecec; /* Soft pink background for login */
+    background-color: #f0fce8; /* Light green background */
     font-family: 'Liberation Mono', monospace; /* Apply Liberation Mono font */
     padding: 20px;
 }
 
-/* Title styling: */
-.login-title {
+/* Title styling: Make "Student" bold and "SignUp" normal */
+.signup-title {
     font-size: 2.5rem;
     color: #060505;
     margin-bottom: 20px;
@@ -19,16 +19,20 @@
     font-weight: normal;
 }
 
-/* Google login button */
-.google-login-btn {
+.signup-title b {
+    font-weight: bold; /* Make "Student" bold */
+}
+
+/* Google sign-up button */
+.google-signup-btn {
     display: inline-flex; /* Align everything in one line */
     align-items: center;
     justify-content: center;
-    padding: 8px 16px; /* Reduce padding for a smaller button size */
+    padding: 6px 14px; /* Reduce padding for a smaller button size */
     background-color: white;
     border: 2px solid black; /* Black border */
     border-radius: 30px;
-    font-size: 0.9rem; /* Slightly reduce font size */
+    font-size: 0.85rem; /* Slightly reduce font size */
     cursor: pointer;
     margin-bottom: 20px;
     width: auto; /* Adjust width to fit the content */
@@ -44,12 +48,12 @@
 }
 
 /* Hover effect */
-.google-login-btn:hover {
+.google-signup-btn:hover {
     transform: scale(1.1); /* Enlarge slightly on hover */
     background-color: #f0f0f0; /* Light gray background on hover */
 }
 
-/* Divider between Google login and email login */
+/* Divider between Google sign-up and email sign-up */
 .divider {
     display: flex;
     align-items: center;
@@ -74,7 +78,7 @@
 }
 
 /* Ensure that the form layout is vertical */
-.login-form {
+.signup-form {
     display: flex;
     flex-direction: column; /* Stacks the input fields vertically */
     align-items: center;    /* Center-align the fields */
@@ -83,7 +87,7 @@
 }
 
 /* Email and Password fields */
-.login-input {
+.signup-input {
     width: 280px;
     padding: 12px 15px;
     margin: 10px 0;
@@ -95,25 +99,10 @@
 }
 
 /* Remove blue highlight and add light gray on focus */
-.login-input:focus {
+.signup-input:focus {
     border-color: lightgray; /* Change border to light gray on focus */
     box-shadow: 0 0 5px rgba(211, 211, 211, 0.5); /* Optional: subtle shadow for visual feedback */
     outline: none; /* Remove default blue outline */
-}
-
-/* Forgot password link (updated to match SignUp link) */
-.forgot-password-link {
-    display: block;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #007bff; /* Same color as the Sign Up link */
-    text-decoration: none; /* Remove underline by default */
-    margin: 10px 0;
-    font-family: 'Liberation Mono', monospace; /* Apply same font as Sign Up link */
-}
-
-.forgot-password-link:hover {
-    text-decoration: underline; /* Add underline only on hover */
 }
 
 /* Continue button */

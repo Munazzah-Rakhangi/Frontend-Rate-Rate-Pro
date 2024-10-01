@@ -1,23 +1,25 @@
 import React from 'react';
-import './LoginPage.css';  // Using the same styles as LoginPage for now
+import './SignupPage.css';  // Import the new SignupPage CSS
 
 const SignupPage = () => {
     return (
-        <div className="login-container">
-            <h1 className="login-title">Sign Up</h1>
+        <div className="signup-container">
+            <h1 className="signup-title">
+                <b>Student</b> SignUp  {/* Bold "Student", normal "SignUp" */}
+            </h1>
 
-            <button className="google-login-btn">
+            <button className="google-signup-btn">
                 <img src={`${process.env.PUBLIC_URL}/images/google.png`} alt="Google Logo" className="google-icon" />
-                Sign Up with Google
+                Sign up with Google
             </button>
 
             <div className="divider">
                 <span className="divider-text">or sign up with email</span>
             </div>
 
-            <form className="login-form">
-                <input type="email" placeholder="Email" className="login-input" />
-                <input type="password" placeholder="Password" className="login-input" />
+            <form className="signup-form">
+                <input type="email" placeholder="Email" className="signup-input" />
+                <input type="password" placeholder="Password" className="signup-input" />
                 <button type="submit" className="continue-btn">Continue</button>
             </form>
 
