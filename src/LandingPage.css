@@ -1,0 +1,121 @@
+/* General container for the landing page */
+.landing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #faf3e0; /* Light beige background */
+    font-family: 'Liberation Mono', monospace;
+    position: relative;
+}
+
+/* Lightbulb icon in the top-left corner */
+.lightbulb-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 190px;
+    height: 190px;
+}
+
+/* User button in the top-right corner */
+.user-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    font-family: 'Liberation Mono', monospace;
+    border-radius: 25px;
+    font-size: 1rem;
+}
+
+/* Center content wrapper */
+.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Landing page title */
+.landing-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+    font-family: 'Liberation Mono', monospace;
+}
+
+/* Subtitle under the title */
+.landing-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 20px;
+    font-family: 'Liberation Mono', monospace;
+}
+
+/* Books sticker placed in the center */
+.books-icon {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Container for the search bar */
+.search-bar {
+    position: relative; /* Make the search-bar container position relative */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Search input styling */
+.search-bar input {
+    width: 350px;
+    padding: 12px 20px; /* Adjust padding to provide space for the icon */
+    padding-right: 50px; /* Add padding to the right to accommodate the search icon */
+    border-radius: 30px;
+    border: 2px solid black;
+    font-size: 1rem;
+    font-family: 'Liberation Mono', monospace;
+    outline: none;
+}
+
+/* Styling for the search button */
+.search-bar .search-btn {
+    position: absolute; /* Use absolute positioning */
+    right: 0px; /* Ensure this container doesn’t interfere with the icon placement */
+    top: 0;
+    bottom: 0;
+    border: none;
+    background-color: transparent; /* Make the button transparent */
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Adjusted styling for the search icon */
+.search-bar img {
+    position: absolute;
+    right: 15px; /* Position the icon inside the search bar */
+    top: 50%; /* Vertically center the icon */
+    transform: translateY(-50%); /* Offset to center */
+    width: 25px;
+    height: 25px;
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+/* New Icon in the Bottom-Right Corner */
+.bottom-right-icon {
+    position: absolute;
+    bottom: 20px; /* 20px from the bottom */
+    right: 20px;  /* 20px from the right */
+    width: 190px;  /* Set the desired width */
+    height: 190px; /* Maintain aspect ratio */
+    cursor: pointer; /* Show pointer cursor on hover */
+}

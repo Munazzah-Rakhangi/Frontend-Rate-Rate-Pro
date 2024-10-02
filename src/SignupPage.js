@@ -1,7 +1,16 @@
 import React from 'react';
-import './SignupPage.css';  // Import the new SignupPage CSS
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import './SignupPage.css';  // Import the SignupPage CSS file
 
 const SignupPage = () => {
+    const navigate = useNavigate(); // Create navigate function
+
+    // Handle the "Continue" button click
+    const handleContinueClick = (event) => {
+        event.preventDefault(); // Prevent the default form submission
+        navigate('/landing'); // Navigate to the Landing Page
+    };
+
     return (
         <div className="signup-container">
             <h1 className="signup-title">
@@ -17,7 +26,8 @@ const SignupPage = () => {
                 <span className="divider-text">or sign up with email</span>
             </div>
 
-            <form className="signup-form">
+            {/* Signup form */}
+            <form className="signup-form" onSubmit={handleContinueClick}>
                 <input type="email" placeholder="Email" className="signup-input" />
                 <input type="password" placeholder="Password" className="signup-input" />
                 <button type="submit" className="continue-btn">Continue</button>
