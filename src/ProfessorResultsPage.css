@@ -31,7 +31,7 @@ body, html {
     width: 80%;
     max-width: 800px;
     margin-bottom: 30px;
-    background-color: white; /* White background for the profile section */
+    background-color: white; /* White background for the profile section */ 
 }
 
 /* Container for the professor photo and icon overlay */
