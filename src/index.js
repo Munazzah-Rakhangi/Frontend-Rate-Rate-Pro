@@ -6,7 +6,8 @@ import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import LandingPage from './LandingPage';
-import SlidingMenu from './SlidingMenu'; // Import the new SlidingMenu component
+import SlidingMenu from './SlidingMenu';
+import ProfessorResultsPage from './ProfessorResultsPage'; // Import the ProfessorResultsPage
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,7 +18,8 @@ ReactDOM.render(
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/landing" element={<LandingPage />} />
-        <Route path="/menu" element={<SlidingMenu />} /> {/* Add route for SlidingMenu */}
+        <Route path="/menu" element={<SlidingMenu />} />
+        <Route path="/professor-results" element={<ProfessorResultsPage />} /> {/* Add route for ProfessorResultsPage */}
       </Routes>
     </Router>
   </React.StrictMode>,

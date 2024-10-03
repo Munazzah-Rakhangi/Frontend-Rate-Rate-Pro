@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Liberation+Mono&display=swap');
+
+/* General Styling */
+body, html {
+    font-family: 'Liberation Mono', monospace; /* Use Liberation Mono font */
+    color: black; /* Set text color to black */
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Set the height to 100% */
+    overflow: auto; /* Allow the body and html to scroll */
+}
+
+/* Ensure the container takes full height and allows scrolling */
+.professor-results-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: #f2f2ff; /* Background color for the results page */
+    height: auto; /* Allow height to adjust based on content */
+    overflow: visible; /* Ensure container is not restricted by overflow */
+}
+
+/* Professor Profile Section */
+.professor-profile {
+    display: flex;
+    align-items: center;
+    border: 2px solid black; /* Add black border around the profile section */
+    border-radius: 20px;
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    margin-bottom: 30px;
+    background-color: white; /* White background for the profile section */
+}
+
+/* Container for the professor photo and icon overlay */
+.professor-photo-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-right: 20px;
+}
+
+/* Style for the professor photo */
+.professor-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+/* Overlay container positioned on top of the professor photo */
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent overlay */
+    border-radius: 50%;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Icon inside the overlay */
+.overlay-icon {
+    width: 30px;
+    height: 30px;
+    color: white;
+}
+
+/* Show the overlay and icon when hovering over the photo container */
+.professor-photo-container:hover .photo-overlay {
+    opacity: 1;
+}
+
+.professor-details {
+    flex: 1;
+}
+
+.professor-name {
+    font-size: 1.8rem;
+    margin: 0 0 10px 0;
+}
+
+.professor-department,
+.professor-contact,
+.professor-bio {
+    margin: 5px 0;
+}
+
+/* Overall Rating Section */
+.professor-rating {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.rating-stars {
+    font-size: 1.5rem;
+}
+
+.star {
+    color: lightgray; /* Default color for stars */
+}
+
+.star.filled {
+    color: gold; /* Color for filled stars */
+}
+
+.rating-score {
+    margin-top: 10px;
+}
+
+/* Courses Taught Section */
+.professor-courses {
+    width: 80%;
+    max-width: 800px;
+    margin-bottom: 30px;
+}
+
+.professor-courses ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.professor-courses li {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+/* Data Visualization Section */
+.professor-data-visualization {
+    width: 80%;
+    max-width: 800px;
+    margin-bottom: 30px;
+}
+
+.ratings-chart {
+    margin-top: 20px;
+}
+
+.rating-bar {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.rating-category {
+    width: 150px;
+    font-weight: bold;
+}
+
+.rating-score-bar {
+    height: 20px;
+    background-color: lightgray;
+    border-radius: 5px;
+    position: relative;
+}
+
+.rating-score-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #007bff; /* Bar color */
+}
