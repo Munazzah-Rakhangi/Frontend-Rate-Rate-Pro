@@ -5,7 +5,8 @@ import App from './App';
 import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
-import LandingPage from './LandingPage';  // Import the LandingPage component
+import LandingPage from './LandingPage';
+import SlidingMenu from './SlidingMenu'; // Import the new SlidingMenu component
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,7 +16,8 @@ ReactDOM.render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/landing" element={<LandingPage />} />  {/* Add this route */}
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/menu" element={<SlidingMenu />} /> {/* Add route for SlidingMenu */}
       </Routes>
     </Router>
   </React.StrictMode>,

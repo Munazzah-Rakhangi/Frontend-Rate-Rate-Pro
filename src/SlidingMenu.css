@@ -1,0 +1,163 @@
+/* Import the Liberation Mono font */
+@import url('https://fonts.googleapis.com/css2?family=Liberation+Mono&display=swap');
+
+/* Ensure the body, html, and root containers take up the full screen height */
+body, html, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Liberation Mono', monospace; /* Set Liberation Mono as the font family */
+    color: black; /* Set font color to black globally */
+}
+
+/* Full screen container to center content vertically and horizontally */
+.full-screen-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    height: 100vh;           /* Full viewport height */
+    background-color: #dedeff; /* Outer background color */
+}
+
+/* Container styling for the sliding menu */
+.sliding-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px; /* Set a maximum width for the container */
+    background-color: #f2f2ff; /* Inside container color */
+    border-radius: 20px;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for emphasis */
+    border: 2px solid black; /* Add a black border to the inside container */
+}
+
+/* Header styling */
+.sliding-header {
+    width: 100%;
+    padding: 30px 0;
+    text-align: center;
+    background-color: #f2f2ff; /* Inside container color */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+/* Adjust header title styling */
+.sliding-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: black; /* Set font color to black */
+    margin: 0;
+}
+
+/* Tabs container */
+.tabs-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    width: 100%;
+    background-color: #f2f2ff; /* Inside container color */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    overflow: hidden;
+    position: sticky;
+    top: 0; /* Set top to 0 to ensure it stays in place */
+    z-index: 9;
+}
+
+/* Individual tab styling */
+.tab {
+    padding: 15px 30px;
+    margin: 0;
+    cursor: pointer;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    font-size: 1rem;
+    color: black; /* Set font color to black */
+    background-color: #f2f2ff; /* Inside container color */
+    border-bottom: 2px solid transparent; /* Add transparent bottom border */
+}
+
+/* Active tab styling with black bottom border */
+.tab.active {
+    font-weight: bold;
+    color: black; /* Set font color to black */
+    background-color: #f2f2ff; /* Inside container color */
+    border-bottom: 2px solid black; /* Add black border to active tab */
+}
+
+/* Tab content styling */
+.content-container {
+    width: 100%;
+    background: #f2f2ff; /* Inside container color */
+    padding: 20px;
+    border-radius: 0 0 20px 20px;
+    margin-top: -1px;
+    overflow-y: auto;
+    flex-grow: 1;
+    color: black; /* Set font color to black */
+}
+
+/* Profile content section styling */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    color: black; /* Set font color to black */
+}
+
+.profile-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    color: black; /* Set font color to black */
+}
+
+/* Label and value styling */
+.profile-label {
+    font-weight: bold;
+    color: black; /* Set font color to black */
+}
+
+.profile-value {
+    color: black; /* Set font color to black */
+}
+
+/* Edit button styling */
+.edit-button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    align-self: flex-end;
+    font-family: 'Liberation Mono', monospace; /* Set font to Liberation Mono */
+}
+
+.edit-button:hover {
+    background-color: #444;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .sliding-menu-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .sliding-title {
+        font-size: 2rem;
+    }
+
+    .tab {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .edit-button {
+        padding: 8px 15px;
+    }
+}
