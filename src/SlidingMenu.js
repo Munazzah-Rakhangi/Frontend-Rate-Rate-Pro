@@ -21,11 +21,11 @@ const SlidingMenu = () => {
                         <div className="profile-section">
                             <div className="profile-info">
                                 <div className="profile-label">First Name</div>
-                                <div className="profile-value">gpt</div>
+                                <div className="profile-value">User</div>
                             </div>
                             <div className="profile-info">
                                 <div className="profile-label">Last Name</div>
-                                <div className="profile-value">boys</div>
+                                <div className="profile-value"></div>
                             </div>
                             <div className="profile-info">
                                 <div className="profile-label">School</div>
