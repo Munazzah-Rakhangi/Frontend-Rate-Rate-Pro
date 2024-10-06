@@ -1,13 +1,35 @@
-/* General styling for the container */
+/* Ensure the body and html are scrollable */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Hide any overflow from the body */
+}
+
+/* Full page wrapper to allow scrolling */
+.full-page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow-y: scroll; /* Enable scrolling within the wrapper */
+    background-color: #f0fce8; /* Light green background */
+}
+
+/* General styling for the signup container */
 .signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    justify-content: flex-start; /* Align content to the top */
+    width: 100%; /* Full width for the container */
+    height: auto; /* Let the container height expand as needed */
+    min-height: 100vh; /* Minimum height to cover the viewport */
     background-color: #f0fce8; /* Light green background */
     font-family: 'Liberation Mono', monospace; /* Apply Liberation Mono font */
-    padding: 20px;
+    padding: 40px 20px; /* Padding for content spacing */
+    box-sizing: border-box; /* Include padding in the element's total width and height */
 }
 
 /* Title styling: Make "Student" bold and "SignUp" normal */
@@ -15,6 +37,7 @@
     font-size: 2.5rem;
     color: #060505;
     margin-bottom: 20px;
+    margin-top: 20px; /* Top margin for spacing */
     font-family: 'Liberation Mono', monospace; /* Explicit font family */
     font-weight: normal;
 }
@@ -86,7 +109,7 @@
     font-family: 'Liberation Mono', monospace; /* Explicit font family */
 }
 
-/* Email and Password fields */
+/* Email, Username, Nickname, Major, and Password fields */
 .signup-input {
     width: 280px;
     padding: 12px 15px;
@@ -137,6 +160,7 @@
     color: #2e2e2e;
     font-family: 'Liberation Mono', monospace; /* Explicit font family */
     font-style: normal; /* Ensure the text is not italic */
+    margin-bottom: 40px; /* Increase bottom margin to provide extra space */
 }
 
 .signup-link {

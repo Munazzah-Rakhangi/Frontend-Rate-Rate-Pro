@@ -2,105 +2,118 @@
 
 /* General Styling */
 body, html {
-    font-family: 'Liberation Mono', monospace; /* Use Liberation Mono font */
-    color: black; /* Set text color to black */
+    font-family: 'Liberation Mono', monospace;
+    color: black;
     margin: 0;
     padding: 0;
-    height: 100%; /* Set the height to 100% */
-    overflow: auto; /* Allow the body and html to scroll */
+    height: 100%;
+    overflow: hidden; /* Prevent body from scrolling */
 }
 
-/* Ensure the container takes full height and allows scrolling */
+/* Professor Results Container */
 .professor-results-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     padding: 40px 20px;
-    background-color: #f2f2ff; /* Background color for the results page */
-    height: auto; /* Allow height to adjust based on content */
-    overflow: visible; /* Ensure container is not restricted by overflow */
+    background-color: #ffe0e0; /* Light pink background */
+    height: 100vh; /* Full height of the viewport */
+    overflow: hidden; /* Prevent scrolling in the main container */
 }
 
-/* Professor Profile Section */
-.professor-profile {
+/* Scrollable Content */
+.professor-results-scrollable {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    border: 2px solid black; /* Add black border around the profile section */
-    border-radius: 20px;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%; /* Full height to enable scrolling */
+    overflow-y: auto; /* Allow vertical scrolling */
     padding: 20px;
-    width: 80%;
-    max-width: 800px;
-    margin-bottom: 30px;
-    background-color: white; /* White background for the profile section */ 
+    box-sizing: border-box;
 }
 
-/* Container for the professor photo and icon overlay */
+/* Grid Layout for Cards - Single Column */
+.professor-results-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 20px;
+    width: calc(100% - 40px); /* Full width minus padding to maintain equal spacing */
+    max-width: 800px; /* Set max-width to control the container width */
+    padding: 20px 20px 80px; /* Extra padding at the bottom */
+    margin: 0 auto; /* Center the grid container */
+}
+
+/* Common Card Styling */
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content to the top */
+    align-items: flex-start;
+    text-align: left;
+    width: 100%; /* Full width within the grid */
+    height: auto; /* Auto height for flexibility */
+    border: 2px solid black; /* Black border around all cards */
+    border-radius: 10px; /* Rounded corners */
+    background-color: #faefef; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px;
+    margin: 10px 0; /* Margin around each card */
+}
+
+/* Section: Professor Profile */
+.professor-profile-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .professor-photo-container {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    margin-right: 20px;
-}
-
-/* Style for the professor photo */
-.professor-photo {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid black;
-}
-
-/* Overlay container positioned on top of the professor photo */
-.photo-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent overlay */
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.professor-photo {
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    opacity: 0; /* Hidden by default */
-    transition: opacity 0.3s ease; /* Smooth transition for hover effect */
+    border: 2px solid black; /* Black border around the photo */
+    margin: 10px 0; /* Space around the image */
 }
 
-/* Icon inside the overlay */
-.overlay-icon {
-    width: 30px;
-    height: 30px;
-    color: white;
-}
-
-/* Show the overlay and icon when hovering over the photo container */
-.professor-photo-container:hover .photo-overlay {
-    opacity: 1;
-}
-
-.professor-details {
-    flex: 1;
-}
-
-.professor-name {
-    font-size: 1.8rem;
-    margin: 0 0 10px 0;
-}
-
-.professor-department,
-.professor-contact,
-.professor-bio {
-    margin: 5px 0;
-}
-
-/* Overall Rating Section */
-.professor-rating {
+.professor-profile-details {
     text-align: center;
-    margin-bottom: 30px;
+}
+
+.professor-profile-details h3 {
+    margin: 5px 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.professor-profile-details p {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+/* Section: Overall Rating */
+.professor-rating-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .rating-stars {
     font-size: 1.5rem;
+    margin: 10px 0;
 }
 
 .star {
@@ -113,33 +126,42 @@ body, html {
 
 .rating-score {
     margin-top: 10px;
+    font-weight: bold;
 }
 
-/* Courses Taught Section */
-.professor-courses {
-    width: 80%;
-    max-width: 800px;
-    margin-bottom: 30px;
+/* Section: Courses Taught */
+.professor-courses-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
-.professor-courses ul {
+.professor-courses-section ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
-.professor-courses li {
+.professor-courses-section li {
     font-size: 1.1rem;
     margin: 10px 0;
 }
 
-/* Data Visualization Section */
-.professor-data-visualization {
-    width: 80%;
-    max-width: 800px;
-    margin-bottom: 30px;
+.course-code {
+    font-weight: bold;
+}
+
+/* Section: Ratings Breakdown */
+.professor-data-visualization-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .ratings-chart {
+    width: 100%;
     margin-top: 20px;
 }
 
@@ -159,6 +181,7 @@ body, html {
     background-color: lightgray;
     border-radius: 5px;
     position: relative;
+    width: 60%; /* Width of the score bar */
 }
 
 .rating-score-bar::after {
@@ -168,4 +191,21 @@ body, html {
     left: 0;
     height: 100%;
     background-color: #007bff; /* Bar color */
+}
+
+/* Extra Margin at the Bottom for Spacing */
+.professor-data-visualization-section {
+    margin-bottom: 50px; /* Space at the bottom of the last card */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .professor-results-grid {
+        grid-template-columns: 1fr; /* Maintain single column layout for mobile */
+    }
+
+    .card {
+        width: 100%; /* Full width for cards on mobile */
+        height: auto; /* Auto height for better responsiveness */
+    }
 }
