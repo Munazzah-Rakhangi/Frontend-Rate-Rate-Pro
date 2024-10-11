@@ -1,8 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Liberation+Mono&display=swap');
+/* Apply Liberation Mono Font to Entire Page */
+* {
+    font-family: 'Liberation Mono', monospace;
+}
 
 /* General Styling */
 body, html {
-    font-family: 'Liberation Mono', monospace;
+    font-family: 'Liberation Mono', monospace; /* Set Liberation Mono as the default font */
     color: black;
     margin: 0;
     padding: 0;
@@ -13,128 +16,105 @@ body, html {
 /* Professor Results Container */
 .professor-results-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 40px 20px;
-    background-color: #ffe0e0; /* Light pink background */
-    height: 100vh; /* Full height of the viewport */
-    overflow: hidden; /* Prevent scrolling in the main container */
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #f0f4ff; /* Light blue background */
+    height: 100vh;
+    overflow: hidden; /* Prevent body overflow */
+    box-sizing: border-box;
+    padding: 20px;
 }
 
 /* Scrollable Content */
-.professor-results-scrollable {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100%; /* Full height to enable scrolling */
-    overflow-y: auto; /* Allow vertical scrolling */
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/* Grid Layout for Cards - Single Column */
-.professor-results-grid {
+.professor-results-content {
     display: grid;
-    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-areas: 
+        'profile data'
+        'courses comments';
+    grid-template-columns: 0.5fr 1.5fr; /* Increase data visualization width */
+    grid-template-rows: auto auto; /* Adjust rows automatically */
     gap: 20px;
-    width: calc(100% - 40px); /* Full width minus padding to maintain equal spacing */
-    max-width: 800px; /* Set max-width to control the container width */
-    padding: 20px 20px 80px; /* Extra padding at the bottom */
-    margin: 0 auto; /* Center the grid container */
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px;
 }
 
 /* Common Card Styling */
 .card {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Align content to the top */
-    align-items: flex-start;
-    text-align: left;
-    width: 100%; /* Full width within the grid */
-    height: auto; /* Auto height for flexibility */
-    border: 2px solid black; /* Black border around all cards */
-    border-radius: 10px; /* Rounded corners */
-    background-color: #faefef; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     padding: 20px;
-    margin: 10px 0; /* Margin around each card */
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Section: Professor Profile */
+/* Profile Section */
 .professor-profile-section {
+    grid-area: profile;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-}
-
-.professor-photo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 120px;
-    height: 120px;
-    margin-bottom: 20px;
+    text-align: center;
+    padding: 15px;
+    width: 90%;
+    max-width: 250px;
+    height: auto;
 }
 
 .professor-photo {
-    width: 100px;
-    height: 100px;
+    width: 130px;
+    height: 135px;
     border-radius: 50%;
-    border: 2px solid black; /* Black border around the photo */
-    margin: 10px 0; /* Space around the image */
+    border: 2px solid #333;
+    margin: 30px 0 20px 0;
 }
 
-.professor-profile-details {
-    text-align: center;
-}
-
-.professor-profile-details h3 {
-    margin: 5px 0;
-    font-size: 1.5rem;
-    color: #333;
-}
-
-.professor-profile-details p {
-    margin: 5px 0;
-    font-size: 1rem;
-}
-
-/* Section: Overall Rating */
-.professor-rating-section {
+/* Button Container for Compare and Rate Buttons */
+.button-container {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-}
-
-.rating-stars {
-    font-size: 1.5rem;
-    margin: 10px 0;
-}
-
-.star {
-    color: lightgray; /* Default color for stars */
-}
-
-.star.filled {
-    color: gold; /* Color for filled stars */
-}
-
-.rating-score {
+    gap: 15px; /* Space between buttons */
     margin-top: 10px;
-    font-weight: bold;
 }
 
-/* Section: Courses Taught */
+/* Style for the Compare Button */
+.compare-button {
+    padding: 8px 16px;
+    background-color: #007bff; /* Blue background */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.compare-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Style for the Rate Button */
+.rate-button {
+    padding: 8px 16px;
+    background-color: #007bff; /* Green background */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.rate-button:hover {
+    background-color: #0056b3; /* Darker green on hover */
+}
+
+/* Courses Section */
 .professor-courses-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    grid-area: courses;
 }
 
 .professor-courses-section ul {
@@ -145,67 +125,113 @@ body, html {
 
 .professor-courses-section li {
     font-size: 1.1rem;
-    margin: 10px 0;
+    margin: 15px 0; /* Increased margin to add space between courses */
+    padding: 10px 0; /* Optional padding for more spacing */
+    border-bottom: 1px solid #ddd; /* Optional separator between courses */
 }
 
 .course-code {
     font-weight: bold;
 }
 
-/* Section: Ratings Breakdown */
+/* Data Visualization Section */
 .professor-data-visualization-section {
+    grid-area: data;
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.visualizations {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.chart-container {
+    margin: 20px;
+    text-align: center;
+}
+
+.chart {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+/* Horizontal Bar Chart and Overall Rating */
+.rating-graph-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.ratings-chart {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.rating-bar {
-    display: flex;
     align-items: center;
-    margin: 10px 0;
 }
 
-.rating-category {
-    width: 150px;
+.horizontal-bar-chart {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.overall-rating {
+    text-align: center;
+}
+
+.rating-score {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.score-value {
+    font-size: 3rem;
     font-weight: bold;
+    margin-right: 5px;
 }
 
-.rating-score-bar {
-    height: 20px;
-    background-color: lightgray;
-    border-radius: 5px;
-    position: relative;
-    width: 60%; /* Width of the score bar */
+.score-max {
+    font-size: 1.5rem;
+    color: #777;
 }
 
-.rating-score-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background-color: #007bff; /* Bar color */
+/* Comments Section */
+.professor-comments-section {
+    grid-area: comments;
 }
 
-/* Extra Margin at the Bottom for Spacing */
-.professor-data-visualization-section {
-    margin-bottom: 50px; /* Space at the bottom of the last card */
+.comments-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.comments-list li {
+    margin: 10px 0;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .professor-results-grid {
-        grid-template-columns: 1fr; /* Maintain single column layout for mobile */
+    .professor-results-content {
+        grid-template-areas: 
+            'profile'
+            'data'
+            'courses'
+            'comments';
+        grid-template-columns: 1fr; /* Single column layout for smaller screens */
     }
 
-    .card {
-        width: 100%; /* Full width for cards on mobile */
-        height: auto; /* Auto height for better responsiveness */
+    .professor-profile-section,
+    .professor-courses-section,
+    .professor-data-visualization-section,
+    .professor-comments-section,
+    .rating-graph-container {
+        width: 100%;
     }
 }
