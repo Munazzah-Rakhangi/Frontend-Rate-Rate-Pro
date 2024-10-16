@@ -168,3 +168,84 @@
     border-bottom-right-radius: inherit; /* Preserve border-radius on hover */
 }
 
+/* Container for the search bar */
+.search-bar {
+    position: relative; /* This will allow the dropdown to be positioned relative to the search bar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%; /* Ensure full width */
+}
+
+/* Search input styling */
+.search-bar input {
+    width: 350px;
+    padding: 12px 20px; /* Adjust padding to provide space for the icon */
+    padding-right: 50px; /* Add padding to the right to accommodate the search icon */
+    border-radius: 30px;
+    border: 2px solid black;
+    font-size: 1rem;
+    font-family: 'Liberation Mono', monospace;
+    outline: none;
+}
+
+/* Styling for the search button */
+.search-bar .search-btn {
+    position: absolute; /* Use absolute positioning */
+    right: 0px; /* Ensure this container doesn’t interfere with the icon placement */
+    top: 0;
+    bottom: 0;
+    border: none;
+    background-color: transparent; /* Make the button transparent */
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Adjusted styling for the search icon */
+.search-bar img {
+    position: absolute;
+    right: 15px; /* Position the icon inside the search bar */
+    top: 50%; /* Vertically center the icon */
+    transform: translateY(-50%); /* Offset to center */
+    width: 25px;
+    height: 25px;
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+/* Search dropdown that appears below the input */
+.search-dropdown {
+    position: absolute; /* Ensure the dropdown is positioned relative to the search bar */
+    top: 100%; /* Move it just below the search input */
+    left: 0;
+    width: 350px; /* Match the input field width */
+    max-height: 200px; /* Set a maximum height, so the dropdown is scrollable */
+    overflow-y: auto; /* Enable scrolling */
+    background-color: #faf3e0; /* Matching the beige background */
+    border: 2px solid black; /* Consistent with the search bar border */
+    border-radius: 0 0 30px 30px; /* Bottom rounded corners */
+    z-index: 1000; /* Ensure it's on top of other elements */
+    font-family: 'Liberation Mono', monospace;
+}
+
+/* Dropdown item styling */
+.search-dropdown-item {
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+/* Hover effect for dropdown items */
+.search-dropdown-item:hover {
+    background-color: #f0f0f0; /* Light gray on hover */
+}
+
+/* Last item in the dropdown should have rounded corners at the bottom */
+.search-dropdown-item:last-child {
+    border-bottom: none; /* Remove the last border */
+    border-bottom-left-radius: 30px; /* Bottom left rounded corner */
+    border-bottom-right-radius: 30px; /* Bottom right rounded corner */
+}
