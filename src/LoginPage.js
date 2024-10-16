@@ -4,32 +4,34 @@ import './LoginPage.css';
 
 const LoginPage = () => {
     const navigate = useNavigate(); // For navigation after login
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState(''); // Updated field name
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
-
-        try {
+    
+        try { 
             const response = await fetchWithTimeout(
-                'https://your-api-endpoint.com/login',
+                'http://54.144.209.246:8000/v1/user/login/',
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email, password }), // Send credentials in the request body
+                    body: JSON.stringify({ username, password }), // Changed from email to username
                 },
                 10000 // Set a timeout of 10 seconds
             );
-
+    
             if (!response.ok) {
-                throw new Error('Login failed. Please check your credentials.');
+                // Parse the JSON response to extract error message
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Login failed. Please check your credentials.'); // Display API error message or generic message
             }
-
+    
             const data = await response.json(); // Parse the JSON response
-
+    
             // Handle the successful login, e.g., save the token
             localStorage.setItem('token', data.token); // Store token or session info
             navigate('/landing'); // Redirect to landing page after successful login
@@ -37,6 +39,7 @@ const LoginPage = () => {
             setError(error.message); // Display an error message if login fails
         }
     };
+    
 
     // Custom fetch function with timeout
     const fetchWithTimeout = (url, options, timeout = 10000) => {
@@ -64,16 +67,16 @@ const LoginPage = () => {
             </button>
 
             <div className="divider">
-                <span className="divider-text">or login with email</span>
+                <span className="divider-text">or login with username</span>
             </div>
 
             <form className="login-form" onSubmit={handleLogin}>
                 <input
-                    type="email"
-                    placeholder="Email"
+                    type="text"
+                    placeholder="Username" // Updated placeholder
                     className="login-input"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)} // Capture email input
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)} // Capture username input
                     required
                 />
                 <input
