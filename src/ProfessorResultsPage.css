@@ -153,6 +153,8 @@ body, html {
 .chart-container {
     margin: 20px;
     text-align: center;
+    width: 190px; /* Reduced width */
+    height: 190px; /* Reduced height */
 }
 
 .chart {

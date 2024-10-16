@@ -1,3 +1,4 @@
+// Import necessary components
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Doughnut, PolarArea, Bar } from 'react-chartjs-2';
@@ -9,24 +10,29 @@ import {
     BarElement,
     CategoryScale,
     LinearScale,
-    RadialLinearScale, // No trailing comma after RadialLinearScale if this is the last item
+    RadialLinearScale,
 } from 'chart.js';
 import './ProfessorResultsPage.css';
 
-// Register the required components from Chart.js
-ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale, RadialLinearScale);
+// Register required Chart.js components
+ChartJS.register(
+    ArcElement,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    RadialLinearScale
+);
 
 const ProfessorResultsPage = () => {
     const location = useLocation();
     const { query } = location.state || {};
     const professorName = query || 'Unknown Professor';
 
-    // State to hold professor data
     const [professorData, setProfessorData] = useState(null);
 
-    // Fetch professor data from the backend (simulated for now)
     useEffect(() => {
-        // Simulated professor data from backend
         const fetchedData = {
             name: professorName,
             photo: '/images/Professor_image.png',
@@ -36,31 +42,30 @@ const ProfessorResultsPage = () => {
             courses: [
                 { code: 'CS101', name: 'Introduction to Computer Science' },
                 { code: 'CS202', name: 'Data Structures and Algorithms' },
-                { code: 'CS303', name: 'Artificial Intelligence' }
+                { code: 'CS303', name: 'Artificial Intelligence' },
             ],
-            overallRating: 3.5, // Overall rating value out of 5
-            ratingsDistribution: { // Sample data for horizontal bar chart
-                Awful: 3,
-                OK: 0,
-                Good: 1,
-                Great: 0,
-                Awesome: 0
+            overallRating: 3.5,
+            emojiRatings: {
+                '😡 Awful': 3,
+                '😐 OK': 0,
+                '🙂 Good': 1,
+                '😄 Great': 0,
+                '🤩 Awesome': 0,
             },
             chartData: {
-                donut: [70, 30], // Sample data for donut chart
-                nightingale: [80, 65, 45], // Sample data for nightingale chart
+                donut: [70, 30],
+                nightingale: [80, 65, 45],
             },
             comments: [
                 'Great professor, explains the concepts clearly.👍',
-                'Provides real-world examples to make learning easy.',
-                'Courses are challenging but rewarding.',
-                'Very approachable and willing to help.'
-            ]
+                'Provides real-world examples to make learning easy.👍👌',
+                'Courses are challenging but rewarding.💯',
+                'Very approachable and willing to help.😇',
+            ],
         };
         setProfessorData(fetchedData);
     }, [professorName]);
 
-    // Donut chart data configuration
     const donutData = {
         labels: ['Yes', 'No'],
         datasets: [
@@ -73,7 +78,6 @@ const ProfessorResultsPage = () => {
         ],
     };
 
-    // Nightingale (Polar Area) chart data configuration
     const nightingaleData = {
         labels: ['Academic Ability', 'Teaching Quality', 'Interaction with Students'],
         datasets: [
@@ -87,33 +91,41 @@ const ProfessorResultsPage = () => {
         ],
     };
 
-    // Horizontal Bar Chart configuration
-    const horizontalBarData = {
-        labels: professorData ? Object.keys(professorData.ratingsDistribution) : [],
+    const emojiBarData = {
+        labels: professorData ? Object.keys(professorData.emojiRatings) : [],
         datasets: [
             {
                 label: 'Number of Students',
-                data: professorData ? Object.values(professorData.ratingsDistribution) : [],
-                backgroundColor: '#007bff',
-                hoverBackgroundColor: '#0056b3',
-            }
+                data: professorData ? Object.values(professorData.emojiRatings) : [],
+                backgroundColor: ['#FF4C4C', '#FFB74D', '#4CAF50', '#64B5F6', '#BA68C8'],
+                hoverBackgroundColor: ['#FF3D3D', '#FFA726', '#43A047', '#42A5F5', '#AB47BC'],
+            },
         ],
     };
 
-    const horizontalBarOptions = {
-        indexAxis: 'y', // Horizontal bar chart
+    const emojiBarOptions = {
+        indexAxis: 'y',
         scales: {
             x: {
                 beginAtZero: true,
-                max: 5 // Scale should match the number of ratings categories
-            }
-        },
-        responsive: true,
-        plugins: {
-            legend: {
-                display: false // Hide legend for simplicity
+                max: 5,
             },
         },
+        plugins: {
+            legend: {
+                display: false,
+            },
+            tooltip: {
+                callbacks: {
+                    label: (context) => {
+                        const label = context.label || '';
+                        const value = context.raw || 0;
+                        return `${label}: ${value} students`;
+                    },
+                },
+            },
+        },
+        responsive: true,
     };
 
     return (
@@ -121,11 +133,14 @@ const ProfessorResultsPage = () => {
             {professorData ? (
                 <div className="professor-results-content">
                     <div className="professor-profile-section card">
-                        <img src={professorData.photo} alt={`${professorData.name}`} className="professor-photo" />
+                        <img
+                            src={professorData.photo}
+                            alt={`${professorData.name}`}
+                            className="professor-photo"
+                        />
                         <h3>{professorData.name}</h3>
                         <p>{professorData.department}</p>
                         <p>Email: {professorData.contact}</p>
-                        {/* Compare and Rate buttons */}
                         <div className="button-container">
                             <button className="compare-button">Compare</button>
                             <button className="rate-button">Rate</button>
@@ -146,26 +161,22 @@ const ProfessorResultsPage = () => {
                     <div className="professor-data-visualization-section card">
                         <h2 className="card-title">Ratings and Visualizations</h2>
                         <div className="visualizations">
-                            {/* Donut Chart */}
                             <div className="chart-container">
                                 <h3>Would Like to Take it Again?</h3>
                                 <Doughnut data={donutData} />
                             </div>
 
-                            {/* Nightingale (Polar Area) Chart */}
                             <div className="chart-container">
                                 <h3>Nightingale Chart</h3>
                                 <PolarArea data={nightingaleData} />
                             </div>
 
-                            {/* Horizontal Bar Graph and Overall Rating */}
                             <div className="rating-graph-container">
-                                <h3>Rating Distribution</h3>
+                                <h3>Emoji-Based Rating Distribution</h3>
                                 <div className="horizontal-bar-chart">
-                                    <Bar data={horizontalBarData} options={horizontalBarOptions} />
+                                    <Bar data={emojiBarData} options={emojiBarOptions} />
                                 </div>
 
-                                {/* Overall Rating */}
                                 <div className="overall-rating">
                                     <h3>Overall Rating</h3>
                                     <div className="rating-score">
@@ -187,7 +198,7 @@ const ProfessorResultsPage = () => {
                     </div>
                 </div>
             ) : (
-                <p>Loading...</p> // Show a loading indicator if data is not yet loaded
+                <p>Loading...</p>
             )}
         </div>
     );
