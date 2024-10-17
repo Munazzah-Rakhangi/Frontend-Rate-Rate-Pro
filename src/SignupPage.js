@@ -23,7 +23,7 @@ const SignupPage = () => {
             major,
             email,
             password,
-            role: 'Professor',  // You can adjust this based on your form or backend logic
+            role: 'Professor',  // Adjust this based on your form or backend logic
             department_id: 1     // Assuming a default value or dynamic input
         };
 
@@ -41,8 +41,13 @@ const SignupPage = () => {
                 throw new Error(errorData.error || 'Error creating user');
             }
 
-            // Handle successful signup (you can store a token, session, etc.)
+            // Handle successful signup (store token, session, user data, etc.)
             const data = await response.json();
+
+            // Store user data in localStorage
+            localStorage.setItem('token', data.token); // Store token for future authentication
+            localStorage.setItem('user', JSON.stringify(data.user)); // Store user info
+            
             console.log('User created successfully:', data);
 
             navigate('/landing'); // Navigate to landing page upon successful signup

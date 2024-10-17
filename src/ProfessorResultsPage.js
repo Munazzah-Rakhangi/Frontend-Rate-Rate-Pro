@@ -54,7 +54,7 @@ const ProfessorResultsPage = () => {
             },
             chartData: {
                 donut: [70, 30],
-                nightingale: [80, 65, 45],
+                nightingale: [80, 65, 45, 70], // Added value for Hardness
             },
             comments: [
                 'Great professor, explains the concepts clearly.👍',
@@ -78,17 +78,42 @@ const ProfessorResultsPage = () => {
         ],
     };
 
+    const donutOptions = {
+        plugins: {
+            legend: {
+                display: false, // Hide the legend for the Donut chart
+            },
+        },
+        maintainAspectRatio: false, // Ensure the chart fits its container
+    };
+
     const nightingaleData = {
-        labels: ['Academic Ability', 'Teaching Quality', 'Interaction with Students'],
+        labels: ['Academic Ability', 'Teaching Quality', 'Interaction with Students', 'Hardness'], // Added "Hardness"
         datasets: [
             {
                 label: 'Ratings',
-                data: professorData ? professorData.chartData.nightingale : [0, 0, 0],
-                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                data: professorData ? professorData.chartData.nightingale : [0, 0, 0, 0], // Updated data to include Hardness
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0'], // Added color for Hardness
                 borderColor: '#fff',
                 borderWidth: 1,
             },
         ],
+    };
+
+    const nightingaleOptions = {
+        maintainAspectRatio: false, // Allow the chart to grow to fill the container
+        scales: {
+            r: {
+                ticks: {
+                    display: false, // Remove inner axis labels for a cleaner look
+                },
+            },
+        },
+        plugins: {
+            legend: {
+                display: false, // Hide the legend labels
+            },
+        },
     };
 
     const emojiBarData = {
@@ -113,7 +138,7 @@ const ProfessorResultsPage = () => {
         },
         plugins: {
             legend: {
-                display: false,
+                display: false, // Remove the legend for the emoji bar chart
             },
             tooltip: {
                 callbacks: {
@@ -161,14 +186,14 @@ const ProfessorResultsPage = () => {
                     <div className="professor-data-visualization-section card">
                         <h2 className="card-title">Ratings and Visualizations</h2>
                         <div className="visualizations">
-                            <div className="chart-container">
+                            <div className="chart-container doughnut-chart">
                                 <h3>Would Like to Take it Again?</h3>
-                                <Doughnut data={donutData} />
+                                <Doughnut data={donutData} options={donutOptions} />
                             </div>
 
-                            <div className="chart-container">
+                            <div className="chart-container nightingale-chart">
                                 <h3>Nightingale Chart</h3>
-                                <PolarArea data={nightingaleData} />
+                                <PolarArea data={nightingaleData} options={nightingaleOptions} />
                             </div>
 
                             <div className="rating-graph-container">
@@ -186,10 +211,45 @@ const ProfessorResultsPage = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Separate Legends Section */}
+                        <div className="chart-legends">
+                            <div className="donut-chart-legend">
+                                {/* <h3>Donut Chart Legend</h3> */}
+                                <div className="donut-legend-item">
+                                    <span className="donut-legend-color" style={{ backgroundColor: '#36A2EB' }}></span>
+                                    Yes
+                                </div>
+                                <div className="donut-legend-item">
+                                    <span className="donut-legend-color" style={{ backgroundColor: '#FF6384' }}></span>
+                                    No
+                                </div>
+                            </div>
+
+                            <div className="nightingale-chart-legend">
+                                {/* <h3>Nightingale Chart Legend</h3> */}
+                                <div className="nightingale-legend-item">
+                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#36A2EB' }}></span>
+                                    Academic Ability
+                                </div>
+                                <div className="nightingale-legend-item">
+                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#FF6384' }}></span>
+                                    Teaching Quality
+                                </div>
+                                <div className="nightingale-legend-item">
+                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#FFCE56' }}></span>
+                                    Interaction with Students
+                                </div>
+                                <div className="nightingale-legend-item">
+                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#4BC0C0' }}></span>
+                                    Hardness
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="professor-comments-section card">
-                        <h2 className="card-title">Sample Comments/Reviews</h2>
+                        <h2 className="card-title">Feedbacks / Reviews</h2>
                         <ul className="comments-list">
                             {professorData.comments?.map((comment, index) => (
                                 <li key={index}>{comment}</li>

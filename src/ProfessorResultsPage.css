@@ -99,7 +99,7 @@ body, html {
 /* Style for the Rate Button */
 .rate-button {
     padding: 8px 16px;
-    background-color: #007bff; /* Green background */
+    background-color: #007bff; /* Same blue background */
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -109,7 +109,7 @@ body, html {
 }
 
 .rate-button:hover {
-    background-color: #0056b3; /* Darker green on hover */
+    background-color: #0056b3; /* Same darker blue on hover */
 }
 
 /* Courses Section */
@@ -147,21 +147,20 @@ body, html {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    gap: 40px;
+    gap: 20px; /* Space between different chart containers */
 }
 
+/* Common container for all charts */
 .chart-container {
-    margin: 20px;
     text-align: center;
-    width: 190px; /* Reduced width */
-    height: 190px; /* Reduced height */
+    width: 150px;  /* Equal width for all charts */
+    height: 150px; /* Equal height for all charts */
 }
 
+/* Chart Styling for all charts */
 .chart {
-    width: 200px;
-    height: 200px;
-    border: 1px solid #ddd;
-    border-radius: 50%;
+    width: 100%; /* Each chart fills its container */
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -216,6 +215,56 @@ body, html {
     margin: 10px 0;
     padding: 10px;
     border-bottom: 1px solid #ddd;
+}
+
+/* Legends Section */
+
+/* Donut Chart Legend */
+.donut-chart-legend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.8rem; /* Smaller font for the legend */
+    margin-bottom: 10px;
+    margin-top: -60px; /* Shift the donut legend upwards */
+    margin-left: 90px;
+}
+
+.donut-legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px; /* Less spacing between legend items */
+}
+
+.donut-legend-color {
+    width: 10px; /* Smaller color box */
+    height: 10px; /* Smaller color box */
+    margin-right: 5px; /* Less space between color and text */
+    border-radius: 2px;
+}
+
+/* Nightingale Chart Legend */
+.nightingale-chart-legend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.8rem; /* Smaller font for the legend */
+    margin-bottom: 10px;
+    margin-top: -60px; /* Shift the nightingale legend upwards */
+    margin-left: 300px;
+}
+
+.nightingale-legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px; /* Less spacing between legend items */
+}
+
+.nightingale-legend-color {
+    width: 10px; /* Smaller color box */
+    height: 10px; /* Smaller color box */
+    margin-right: 5px; /* Less space between color and text */
+    border-radius: 2px;
 }
 
 /* Responsive Design */

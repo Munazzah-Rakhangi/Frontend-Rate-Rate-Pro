@@ -6,6 +6,22 @@ const SlidingMenu = () => {
     const location = useLocation();
     const initialTab = location.state?.selectedOption || 'Profile';
     const [activeTab, setActiveTab] = useState(initialTab);
+    const [user, setUser] = useState(null); // State for storing user data
+
+    // Fetch user data from localStorage on component mount
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser); // Safely parse the user data
+                setUser(parsedUser);
+            } catch (error) {
+                console.error("Error parsing stored user data:", error);
+            }
+        } else {
+            console.warn("No user data found in localStorage");
+        }
+    }, []);
 
     useEffect(() => {
         if (location.state?.selectedOption) {
@@ -20,20 +36,17 @@ const SlidingMenu = () => {
                     <div className="tab-content">
                         <div className="profile-section">
                             <div className="profile-info">
-                                <div className="profile-label">First Name</div>
-                                <div className="profile-value">User</div>
+                                <div className="profile-label">Username</div>
+                                <div className="profile-value">{user?.username || 'N/A'}</div>
                             </div>
-                            <div className="profile-info">
-                                <div className="profile-label">Last Name</div>
-                                <div className="profile-value"></div>
-                            </div>
+                        
                             <div className="profile-info">
                                 <div className="profile-label">School</div>
-                                <div className="profile-value">School of Science and Engineering</div>
+                                <div className="profile-value">{user?.school || 'School of Science and Engineering'}</div>
                             </div>
                             <div className="profile-info">
-                                <div className="profile-label">Field of Study</div>
-                                <div className="profile-value">Artificial Intelligence</div>
+                                <div className="profile-label">Major</div>
+                                <div className="profile-value">{user?.major || 'Artificial Intelligence'}</div>
                             </div>
                         </div>
                         <button className="edit-button">Edit</button>
@@ -73,7 +86,7 @@ const SlidingMenu = () => {
             <div className="sliding-menu-container">
                 {/* Header Section */}
                 <div className="sliding-header">
-                    <h1 className="sliding-title">Hey, User</h1>
+                    <h1 className="sliding-title">Hey, {user?.username || 'User'}</h1>
                 </div>
 
                 {/* Tabs Section */}
