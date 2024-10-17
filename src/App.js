@@ -1,63 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
+import LoginPage from './LoginPage';  // Import the LoginPage component
+import ForgotPasswordPage from './ForgotPasswordPage'; // Import ForgotPasswordPage component
 
 const App = () => {
     const [searchQuery, setSearchQuery] = useState('');  // State to hold the search query
-    const [searchResults, setSearchResults] = useState([]);  // State to hold the search results
-    const [showDropdown, setShowDropdown] = useState(false); // State to manage dropdown visibility
     const navigate = useNavigate();  // This hook will help navigate between pages
 
-    // Function to call the search API
-    const callSearchAPI = async (query) => {
-        try {
-            const response = await fetch(`https://your-api-endpoint.com/search?query=${query}`, {
-                method: 'GET',  // Use appropriate HTTP method (GET, POST, etc.)
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            // Check if response is ok
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();  // Parse the JSON data from the API
-
-            // Set the search results
-            setSearchResults(data);
-            setShowDropdown(true);  // Show the dropdown with results
-        } catch (error) {
-            console.error('Error fetching search results:', error);
-        }
+    // Navigate to the Login page
+    const handleLoginClick = () => {
+        navigate('/login');
     };
 
-    // Handle the search and call the search API
+    // Navigate to the Signup page
+    const handleSignupClick = () => {
+        navigate('/signup');
+    };
+
+    // Handle the search and navigate to the Professor Results Page
     const handleSearch = () => {
+        // Check if searchQuery is not empty
         if (searchQuery.trim() !== '') {
-            callSearchAPI(searchQuery);
+            // Navigate to the Professor Results Page and pass the searchQuery as a state or query parameter
+            navigate('/professor-results', { state: { query: searchQuery } });
         }
-    };
-
-    // Navigate to the Professor Results Page on result click
-    const handleResultClick = (result) => {
-        navigate('/professor-details', { state: { result } });
     };
 
     return (
         <div className="container">
             <div className="login-buttons">
-                <button className="login-btn" onClick={() => navigate('/login')}>Login</button>
-                <button className="signup-btn" onClick={() => navigate('/signup')}>SignUp</button>
+                <button className="login-btn" onClick={handleLoginClick}>Login</button>
+                <button className="signup-btn" onClick={handleSignupClick}>SignUp</button>
             </div>
 
+            {/* Add the sticker at the top-left corner */}
             <img src="/images/rating-system.png" alt="Rating System Sticker" className="sticker-top-left" />
 
             <h1>Rate Rate Professor</h1>
 
             <p>Enter the name of your professor or department and start rating.</p>
 
+            {/* Thumbs up image inserted here */}
             <img src="/images/thumps_up.png" alt="Thumbs Up" className="thumbs-up" />
 
             {/* Search bar with a button to trigger the search */}
@@ -67,7 +51,6 @@ const App = () => {
                     placeholder="Search for professor or department....."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}  // Update search query state
-                    onFocus={() => setShowDropdown(true)}  // Show dropdown when input is focused
                 />
                 <img
                     src="/images/search.png"
@@ -76,22 +59,6 @@ const App = () => {
                     onClick={handleSearch}  // Trigger the search on click
                     style={{ cursor: 'pointer' }}
                 />
-
-                {/* Dropdown for search results */}
-                {showDropdown && searchResults.length > 0 && (
-                    <div className="search-dropdown">
-                        {searchResults.map((result) => (
-                            <div
-                                key={result.userid}
-                                className="search-dropdown-item"
-                                onClick={() => handleResultClick(result)}
-                            >
-                                <strong>{result.username}</strong> ({result.role})
-                                <div>{result.major}</div>
-                            </div>
-                        ))}
-                    </div>
-                )}
             </div>
 
             <div className="footer-links">

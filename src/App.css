@@ -41,7 +41,6 @@ p {
   margin: 10px 0; /* Shift the image upwards by reducing the margin */
 }
 
-
 /* Add the following styling for the sticker at the top-left corner */
 .sticker-top-left {
   position: absolute;
@@ -54,7 +53,7 @@ p {
 
 /* Search Bar Styling */
 .search-bar {
-  position: relative; /* To position the icon inside the search bar */
+  position: relative; /* Necessary to contain the absolutely positioned search icon */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,7 +62,7 @@ p {
 
 .search-bar input {
   width: 350px;
-  padding: 8px 40px 8px 20px; /* Add padding to make space for the icon */
+  padding: 8px 50px 8px 20px; /* Add padding to make space for the icon */
   font-size: 1rem;
   background-color: #f0f0f0; /* Light gray background */
   border-radius: 50px;
@@ -82,12 +81,16 @@ p {
   background-color: #e6e6e6; /* Slightly darker gray on hover/focus */
 }
 
-.search-bar img {
-  position: absolute;
-  right: 15px; /* Position the icon inside the search bar */
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
+/* Search Icon Styling with padding */
+.search-icon {
+  position: absolute; /* Absolute positioning relative to .search-bar */
+  right: 30px; /* Reduced the right positioning */
+  top: 50%; /* Vertically center the icon */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+  padding-right: 420px; /* Add padding to move it left */
+  width: 25px; /* Set width of the icon */
+  height: 25px; /* Set height of the icon */
+  cursor: pointer; /* Make the icon clickable */
 }
 
 .icon {
@@ -132,7 +135,6 @@ p {
 .login-buttons button:active {
   transform: scale(1.05); /* Slightly smaller scaling on active (clicked) state */
 }
-
 
 /* Footer links positioned at the bottom left */
 .footer-links {
