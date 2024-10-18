@@ -8,6 +8,7 @@ body, html, #root {
     padding: 0;
     font-family: 'Liberation Mono', monospace; /* Set Liberation Mono as the font family */
     color: black; /* Set font color to black globally */
+    overflow-x: hidden; /* Prevent horizontal scrolling for the body */
 }
 
 /* Full screen container to center content vertically and horizontally */
@@ -17,6 +18,7 @@ body, html, #root {
     align-items: center;     /* Center vertically */
     height: 100vh;           /* Full viewport height */
     background-color: #dedeff; /* Outer background color */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Container styling for the sliding menu */
@@ -25,11 +27,12 @@ body, html, #root {
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    width: 90%;
+    width: 100%; /* Set width to 100% to ensure it adjusts to the screen */
     max-width: 800px; /* Set a maximum width for the container */
     background-color: #f2f2ff; /* Inside container color */
     border-radius: 20px;
-    overflow-y: auto; /* Allow scrolling if content overflows */
+    overflow-y: auto; /* Allow vertical scrolling if content overflows */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for emphasis */
     border: 2px solid black; /* Add a black border to the inside container */
 }
@@ -57,7 +60,7 @@ body, html, #root {
     display: flex;
     justify-content: space-around;
     margin: 20px 0;
-    width: 100%;
+    width: 100%; /* Ensure the tabs container doesn't overflow */
     background-color: #f2f2ff; /* Inside container color */
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -141,10 +144,10 @@ body, html, #root {
     background-color: #444;
 }
 
-/* Responsive Design */
+/* Responsive Design for smaller screens */
 @media (max-width: 600px) {
     .sliding-menu-container {
-        width: 95%;
+        width: 95%; /* Adjust width for smaller screens */
         padding: 15px;
     }
 

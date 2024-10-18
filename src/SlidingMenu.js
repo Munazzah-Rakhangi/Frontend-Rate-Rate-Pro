@@ -6,14 +6,14 @@ const SlidingMenu = () => {
     const location = useLocation();
     const initialTab = location.state?.selectedOption || 'Profile';
     const [activeTab, setActiveTab] = useState(initialTab);
-    const [user, setUser] = useState(null); // State for storing user data
+    const [user, setUser] = useState(null);
 
     // Fetch user data from localStorage on component mount
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             try {
-                const parsedUser = JSON.parse(storedUser); // Safely parse the user data
+                const parsedUser = JSON.parse(storedUser);
                 setUser(parsedUser);
             } catch (error) {
                 console.error("Error parsing stored user data:", error);
@@ -22,12 +22,6 @@ const SlidingMenu = () => {
             console.warn("No user data found in localStorage");
         }
     }, []);
-
-    useEffect(() => {
-        if (location.state?.selectedOption) {
-            setActiveTab(location.state.selectedOption);
-        }
-    }, [location.state]);
 
     const renderContent = () => {
         switch (activeTab) {
@@ -39,14 +33,17 @@ const SlidingMenu = () => {
                                 <div className="profile-label">Username</div>
                                 <div className="profile-value">{user?.username || 'N/A'}</div>
                             </div>
-                        
                             <div className="profile-info">
-                                <div className="profile-label">School</div>
-                                <div className="profile-value">{user?.school || 'School of Science and Engineering'}</div>
+                                <div className="profile-label">Email</div>
+                                <div className="profile-value">{user?.email || 'N/A'}</div>
+                            </div>
+                            <div className="profile-info">
+                                <div className="profile-label">Nickname</div>
+                                <div className="profile-value">{user?.nickname || 'N/A'}</div>
                             </div>
                             <div className="profile-info">
                                 <div className="profile-label">Major</div>
-                                <div className="profile-value">{user?.major || 'Artificial Intelligence'}</div>
+                                <div className="profile-value">{user?.major || 'N/A'}</div>
                             </div>
                         </div>
                         <button className="edit-button">Edit</button>
@@ -56,24 +53,18 @@ const SlidingMenu = () => {
                 return (
                     <div className="tab-content">
                         <h2>Account Settings</h2>
-                        <p>This is where account settings details will go.</p>
-                        <button className="edit-button">Edit</button>
                     </div>
                 );
             case 'Ratings':
                 return (
                     <div className="tab-content">
                         <h2>Your Ratings</h2>
-                        <p>This is where your ratings will be displayed.</p>
-                        <button className="edit-button">Edit</button>
                     </div>
                 );
             case 'Saved Professors':
                 return (
                     <div className="tab-content">
                         <h2>Saved Professors</h2>
-                        <p>This is where your saved professors will be displayed.</p>
-                        <button className="edit-button">Edit</button>
                     </div>
                 );
             default:
@@ -84,12 +75,10 @@ const SlidingMenu = () => {
     return (
         <div className="full-screen-container">
             <div className="sliding-menu-container">
-                {/* Header Section */}
                 <div className="sliding-header">
                     <h1 className="sliding-title">Hey, {user?.username || 'User'}</h1>
                 </div>
 
-                {/* Tabs Section */}
                 <div className="tabs-container">
                     <div
                         className={`tab ${activeTab === 'Profile' ? 'active' : ''}`}
@@ -117,7 +106,6 @@ const SlidingMenu = () => {
                     </div>
                 </div>
 
-                {/* Content Section */}
                 <div className="content-container">
                     {renderContent()}
                 </div>

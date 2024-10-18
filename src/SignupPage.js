@@ -28,6 +28,7 @@ const SignupPage = () => {
         };
 
         try {
+            // API call to create a user
             const response = await fetch('http://54.144.209.246:8000/v1/user/create/', {
                 method: 'POST',
                 headers: {
@@ -36,23 +37,32 @@ const SignupPage = () => {
                 body: JSON.stringify(userData), // Sending the form data
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Error creating user');
-            }
-
-            // Handle successful signup (store token, session, user data, etc.)
+            // Parse response JSON
             const data = await response.json();
 
-            // Store user data in localStorage
-            localStorage.setItem('token', data.token); // Store token for future authentication
-            localStorage.setItem('user', JSON.stringify(data.user)); // Store user info
-            
+            // Log the full response for debugging
+            console.log('Full API response:', data);
+
+            // Check if the response was successful
+            if (!response.ok) {
+                throw new Error(data.error || 'Error creating user');
+            }
+
+            // Store the user data in localStorage
+            if (data) {
+                console.log('User:', data);  // Log the user data
+                localStorage.setItem('user', JSON.stringify(data)); // Store user info
+            } else {
+                console.error('No user data found in response');
+            }
+
             console.log('User created successfully:', data);
 
             navigate('/landing'); // Navigate to landing page upon successful signup
+
         } catch (error) {
             setError(error.message); // Display error if API call fails
+            console.error('Error during signup:', error.message);
         }
     };
 

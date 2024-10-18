@@ -4,13 +4,13 @@ import './LoginPage.css';
 
 const LoginPage = () => {
     const navigate = useNavigate(); // For navigation after login
-    const [username, setUsername] = useState(''); // State for username
+    const [email, setEmail] = useState(''); // State for email (which will be sent as username)
     const [password, setPassword] = useState(''); // State for password
     const [error, setError] = useState(''); // State for errors
 
     const handleLogin = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
-    
+
         try {
             const response = await fetchWithTimeout(
                 'http://54.144.209.246:8000/v1/user/login/',
@@ -19,25 +19,34 @@ const LoginPage = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ username, password }), // Send username and password
+                    // Send email as 'username' since the backend expects 'username'
+                    body: JSON.stringify({ username: email, password }), 
                 },
                 10000 // Set a timeout of 10 seconds
             );
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Login failed. Please check your credentials.');
             }
-    
+
             const data = await response.json(); // Parse the JSON response
-    
-            // Store the token or session info in localStorage
-            localStorage.setItem('token', data.token); // Save token for authentication
-            localStorage.setItem('user', JSON.stringify(data.user)); // Save user info
-            
+
+            // Log the full response for debugging
+            console.log('Full login response:', data);
+
+            // Store user info in localStorage
+            if (data) {
+                console.log('User:', data);  // Log user data
+                localStorage.setItem('user', JSON.stringify(data)); // Save user info
+            } else {
+                console.error('No user data found in login response');
+            }
+
             navigate('/landing'); // Redirect to the landing page after successful login
         } catch (error) {
             setError(error.message); // Display an error message if login fails
+            console.error('Login Error:', error.message);
         }
     };
 
@@ -67,16 +76,16 @@ const LoginPage = () => {
             </button>
 
             <div className="divider">
-                <span className="divider-text">or login with username</span>
+                <span className="divider-text">or login with email</span>
             </div>
 
             <form className="login-form" onSubmit={handleLogin}>
                 <input
-                    type="text"
-                    placeholder="Username" // Updated to match the username field
+                    type="email"
+                    placeholder="Email"
                     className="login-input"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)} // Capture username input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} // Capture email input
                     required
                 />
                 <input
