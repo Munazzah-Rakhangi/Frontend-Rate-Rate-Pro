@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './LoginPage.css';
 
 const LoginPage = () => {
     const navigate = useNavigate(); // For navigation after login
+    const location = useLocation(); // For accessing the state passed during redirection
     const [email, setEmail] = useState(''); // State for email (which will be sent as username)
     const [password, setPassword] = useState(''); // State for password
     const [error, setError] = useState(''); // State for errors
+
+    const message = location.state?.message; // Access the message from state (if available)
 
     const handleLogin = async (e) => {
         e.preventDefault(); // Prevent default form submission behavior
@@ -19,7 +22,6 @@ const LoginPage = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    // Send email as 'username' since the backend expects 'username'
                     body: JSON.stringify({ username: email, password }), 
                 },
                 10000 // Set a timeout of 10 seconds
@@ -32,21 +34,14 @@ const LoginPage = () => {
 
             const data = await response.json(); // Parse the JSON response
 
-            // Log the full response for debugging
-            console.log('Full login response:', data);
-
             // Store user info in localStorage
             if (data) {
-                console.log('User:', data);  // Log user data
                 localStorage.setItem('user', JSON.stringify(data)); // Save user info
-            } else {
-                console.error('No user data found in login response');
             }
 
             navigate('/landing'); // Redirect to the landing page after successful login
         } catch (error) {
             setError(error.message); // Display an error message if login fails
-            console.error('Login Error:', error.message);
         }
     };
 
@@ -69,6 +64,9 @@ const LoginPage = () => {
     return (
         <div className="login-container">
             <h1 className="login-title">Login</h1>
+
+            {/* Display a redirect message if there is one */}
+            {message && <p className="redirect-message">{message}</p>}
 
             <button className="google-login-btn">
                 <img src="/images/google.png" alt="Google Logo" className="google-icon" />

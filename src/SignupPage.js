@@ -12,6 +12,7 @@ const SignupPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // Error state
+    const [success, setSuccess] = useState(''); // Success state
 
     // Function to handle form submission
     const handleContinueClick = async (event) => {
@@ -58,7 +59,13 @@ const SignupPage = () => {
 
             console.log('User created successfully:', data);
 
-            navigate('/landing'); // Navigate to landing page upon successful signup
+            // Show success message
+            setSuccess('Signup successful! Redirecting to login page...');
+
+            // Redirect to login page after 3 seconds
+            setTimeout(() => {
+                navigate('/login'); // Navigate to login page upon successful signup
+            }, 3000);
 
         } catch (error) {
             setError(error.message); // Display error if API call fails
@@ -128,6 +135,7 @@ const SignupPage = () => {
                 </form>
 
                 {error && <p className="error-message">{error}</p>} {/* Display error message if any */}
+                {success && <p className="success-message">{success}</p>} {/* Display success message if signup is successful */}
 
                 <p className="signup-text">
                     Already have an account? <a href="/login" className="signup-link">Login</a>

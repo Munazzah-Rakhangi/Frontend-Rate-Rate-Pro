@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
 
@@ -6,7 +6,17 @@ const LandingPage = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [searchTerm, setSearchTerm] = useState(''); // State for the search query
     const [searchResults, setSearchResults] = useState([]); // State for the search results
+    const [userName, setUserName] = useState('User'); // Default value for user name
     const navigate = useNavigate();
+
+    // Effect to retrieve user data from localStorage
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user'); // Retrieve user data from localStorage
+        if (storedUser) {
+            const userData = JSON.parse(storedUser);
+            setUserName(userData.username); // Set the user's name from localStorage
+        }
+    }, []); // Run only once when the component mounts
 
     const handleUserButtonClick = () => {
         setShowDropdown(!showDropdown);
@@ -42,7 +52,7 @@ const LandingPage = () => {
         <div className="landing-container">
             <img src="/images/Lightbulb.png" alt="Light Bulb" className="lightbulb-icon" />
             <div className="user-button" onClick={handleUserButtonClick}>
-                Hey, User
+                Hey, {userName} {/* Display the logged-in user's name */}
             </div>
 
             {showDropdown && (
