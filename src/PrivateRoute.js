@@ -2,14 +2,22 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem('user')); // Check if user data exists in localStorage
+  let user = null;
 
-  // If user is not authenticated, redirect to the login page and pass a message
-  if (!user) {
-    return <Navigate to="/login" state={{ message: "Please log in to access this page" }} replace />;
+  // Safely parse user from localStorage
+  try {
+    user = JSON.parse(localStorage.getItem('user'));
+  } catch (error) {
+    console.error('Error parsing user data from localStorage:', error);
+    localStorage.removeItem('user'); // Clear potentially corrupted data
   }
 
-  return children; // Render the children (protected page) if user is authenticated
+  // If no user is found, redirect to login page with a message
+  if (!user) {
+    return <Navigate to="/login" state={{ message: "Please log in or sign up to access this page." }} replace />;
+  }
+
+  return children; // Allow access if the user is authenticated
 };
 
 export default PrivateRoute;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -8,6 +8,7 @@ const LandingPage = () => {
     const [searchResults, setSearchResults] = useState([]); // State for the search results
     const [userName, setUserName] = useState('User'); // Default value for user name
     const navigate = useNavigate();
+    const location = useLocation(); // Access the current location
 
     // Effect to retrieve user data from localStorage
     useEffect(() => {
@@ -16,7 +17,22 @@ const LandingPage = () => {
             const userData = JSON.parse(storedUser);
             setUserName(userData.username); // Set the user's name from localStorage
         }
-    }, []); // Run only once when the component mounts
+
+        // Add an event listener for the 'popstate' event (back button)
+        const handlePopState = () => {
+            if (location.pathname === '/landing') {
+                localStorage.removeItem('user'); // Clear user data from localStorage
+                navigate('/', { state: { message: "You have been logged out. See you soon!", from: '/landing' } }); // Ensure 'from' is set to '/landing'
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        // Cleanup event listener on component unmount
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate, location.pathname]); // Re-run effect if location changes
 
     const handleUserButtonClick = () => {
         setShowDropdown(!showDropdown);
@@ -28,14 +44,14 @@ const LandingPage = () => {
 
     // Function to handle search input change
     const handleSearchChange = async (e) => {
-        const query = e.target.value; // Capture the search query from the input field
+        const query = e.target.value;
         setSearchTerm(query); // Update the state with the search query
 
         if (query.length > 1) { // Trigger API when more than 1 character is typed
             try {
-                const response = await fetch(`http://54.144.209.246:8000/v1/user/search/?query=${query}`); // Use query for API call
+                const response = await fetch(`http://54.144.209.246:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
-                    const data = await response.json(); // Parse the API response
+                    const data = await response.json();
                     setSearchResults(data); // Update the search results state
                 } else {
                     throw new Error('Error fetching search results');
@@ -48,11 +64,16 @@ const LandingPage = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('user'); // Remove user data from localStorage
+        navigate('/', { state: { message: "You have been logged out. See you soon!", from: '/landing' } }); // Ensure 'from' is set to '/landing'
+    };
+
     return (
         <div className="landing-container">
             <img src="/images/Lightbulb.png" alt="Light Bulb" className="lightbulb-icon" />
             <div className="user-button" onClick={handleUserButtonClick}>
-                Hey, {userName} {/* Display the logged-in user's name */}
+                Hey, {userName}
             </div>
 
             {showDropdown && (
@@ -61,7 +82,7 @@ const LandingPage = () => {
                     <div className="dropdown-item" onClick={() => handleDropdownItemClick("Account Settings")}>Account Settings</div>
                     <div className="dropdown-item" onClick={() => handleDropdownItemClick("Ratings")}>Your Ratings</div>
                     <div className="dropdown-item" onClick={() => handleDropdownItemClick("Saved Professors")}>Saved Professor</div>
-                    <div className="dropdown-item" onClick={() => handleDropdownItemClick("Logout")}>Logout</div>
+                    <div className="dropdown-item" onClick={handleLogout}>Logout</div>
                 </div>
             )}
 
@@ -74,18 +95,21 @@ const LandingPage = () => {
                     <input
                         type="text"
                         placeholder="Enter your major..."
-                        value={searchTerm} // Controlled input bound to searchTerm
-                        onChange={handleSearchChange} // Trigger search on input change
+                        value={searchTerm}
+                        onChange={handleSearchChange}
                     />
                     <button type="submit" className="search-btn">
                         <img src="/images/search.png" alt="Search" />
                     </button>
 
-                    {/* Display search results as a dropdown */}
                     {searchResults.length > 0 && (
                         <div className="search-dropdown">
                             {searchResults.map((result) => (
-                                <div key={result.userid} className="search-dropdown-item">
+                                <div
+                                    key={result.userid}
+                                    className="search-dropdown-item"
+                                    onClick={() => navigate('/professor-results', { state: { professor: result } })}
+                                >
                                     {result.username} ({result.role}) - {result.major}
                                 </div>
                             ))}

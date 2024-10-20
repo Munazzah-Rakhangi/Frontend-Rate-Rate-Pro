@@ -1,20 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './LoginPage.css';
 
 const LoginPage = () => {
     const navigate = useNavigate(); // For navigation after login
     const location = useLocation(); // For accessing the state passed during redirection
-    const [email, setEmail] = useState(''); // State for email (which will be sent as username)
+    const [email, setEmail] = useState(''); // State for email
     const [password, setPassword] = useState(''); // State for password
     const [error, setError] = useState(''); // State for errors
+    const [redirectMessage, setRedirectMessage] = useState(''); // State for the message passed during redirection
 
-    const message = location.state?.message; // Access the message from state (if available)
+    // Checking if the message was passed during redirection
+    useEffect(() => {
+        if (location.state?.message) {
+            setRedirectMessage(location.state.message);
+            console.log("Redirect message received: ", location.state.message); // Debugging
+        }
+    }, [location.state]);
 
+    // Function to handle login form submission
     const handleLogin = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
+        e.preventDefault(); // Prevent default form submission
 
         try {
+            console.log("Login attempt for user:", email); // Debugging
+
+            // API request to login
             const response = await fetchWithTimeout(
                 'http://54.144.209.246:8000/v1/user/login/',
                 {
@@ -22,9 +33,9 @@ const LoginPage = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ username: email, password }), 
+                    body: JSON.stringify({ username: email, password }), // Send email and password
                 },
-                10000 // Set a timeout of 10 seconds
+                10000 // Timeout of 10 seconds
             );
 
             if (!response.ok) {
@@ -32,16 +43,26 @@ const LoginPage = () => {
                 throw new Error(errorData.error || 'Login failed. Please check your credentials.');
             }
 
-            const data = await response.json(); // Parse the JSON response
+            const data = await response.json();
+            console.log("Login successful. User data: ", data); // Debugging
 
-            // Store user info in localStorage
-            if (data) {
-                localStorage.setItem('user', JSON.stringify(data)); // Save user info
-            }
+            // Save user info securely (no passwords or sensitive info)
+            const userToStore = {
+                id: data.id,
+                username: data.username,
+                email: data.email, 
+                nickname: data.nickname,
+                role: data.role,
+                major: data.major,
+            };
 
-            navigate('/landing'); // Redirect to the landing page after successful login
+            localStorage.setItem('user', JSON.stringify(userToStore));
+
+            // Redirect to the landing page after successful login
+            navigate('/landing');
         } catch (error) {
-            setError(error.message); // Display an error message if login fails
+            setError(error.message); // Set error message if login fails
+            console.error("Login error: ", error); // Debugging
         }
     };
 
@@ -65,9 +86,9 @@ const LoginPage = () => {
         <div className="login-container">
             <h1 className="login-title">Login</h1>
 
-            {/* Display a redirect message if there is one */}
-            {message && <p className="redirect-message">{message}</p>}
-
+            {/* Display a redirect message if it exists */}
+            {redirectMessage && <p className="redirect-message">{redirectMessage}</p>}
+            
             <button className="google-login-btn">
                 <img src="/images/google.png" alt="Google Logo" className="google-icon" />
                 Login with Google
@@ -77,6 +98,7 @@ const LoginPage = () => {
                 <span className="divider-text">or login with email</span>
             </div>
 
+            {/* Login form */}
             <form className="login-form" onSubmit={handleLogin}>
                 <input
                     type="email"
@@ -97,12 +119,11 @@ const LoginPage = () => {
                 <a href="/forgot-password" className="forgot-password-link">
                     Forgot Password?
                 </a>
-                <button type="submit" className="continue-btn">
-                    Continue
-                </button>
+                <button type="submit" className="continue-btn">Continue</button>
             </form>
 
-            {error && <p className="error-message">{error}</p>} {/* Display error if any */}
+            {/* Display error message if login fails */}
+            {error && <p className="error-message">{error}</p>} 
 
             <p className="signup-text">
                 Don't have an account? <a href="/signup" className="signup-link">Sign Up</a>

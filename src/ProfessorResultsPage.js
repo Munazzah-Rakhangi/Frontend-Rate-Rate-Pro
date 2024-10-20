@@ -1,7 +1,9 @@
-// Import necessary components
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Doughnut, PolarArea, Bar } from 'react-chartjs-2';
+import './ProfessorResultsPage.css';
+
+// Register required Chart.js components
 import {
     Chart as ChartJS,
     ArcElement,
@@ -12,9 +14,6 @@ import {
     LinearScale,
     RadialLinearScale,
 } from 'chart.js';
-import './ProfessorResultsPage.css';
-
-// Register required Chart.js components
 ChartJS.register(
     ArcElement,
     Tooltip,
@@ -27,44 +26,77 @@ ChartJS.register(
 
 const ProfessorResultsPage = () => {
     const location = useLocation();
-    const { query } = location.state || {};
-    const professorName = query || 'Unknown Professor';
-
+    const { professor, query } = location.state || {};  // Get both professor object or query
+    
     const [professorData, setProfessorData] = useState(null);
 
     useEffect(() => {
-        const fetchedData = {
-            name: professorName,
-            photo: '/images/Professor_image.png',
-            department: 'Computer Science Department',
-            contact: 'john.doe@university.edu',
-            bio: 'Dr. John Doe is a distinguished professor of Computer Science with over 20 years of teaching experience in AI and Data Science.',
-            courses: [
-                { code: 'CS101', name: 'Introduction to Computer Science' },
-                { code: 'CS202', name: 'Data Structures and Algorithms' },
-                { code: 'CS303', name: 'Artificial Intelligence' },
-            ],
-            overallRating: 3.5,
-            emojiRatings: {
-                '😡 Awful': 3,
-                '😐 OK': 0,
-                '🙂 Good': 1,
-                '😄 Great': 0,
-                '🤩 Awesome': 0,
-            },
-            chartData: {
-                donut: [70, 30],
-                nightingale: [80, 65, 45, 70], // Added value for Hardness
-            },
-            comments: [
-                'Great professor, explains the concepts clearly.👍',
-                'Provides real-world examples to make learning easy.👍👌',
-                'Courses are challenging but rewarding.💯',
-                'Very approachable and willing to help.😇',
-            ],
-        };
-        setProfessorData(fetchedData);
-    }, [professorName]);
+        if (professor) {
+            // When professor object is provided (e.g., from LandingPage.js)
+            const fetchedData = {
+                name: professor.username,
+                photo: '/images/Professor_image.png',
+                department: `${professor.major} Department`,
+                contact: 'john.doe@university.edu',
+                bio: 'Dr. John Doe is a distinguished professor with over 20 years of teaching experience.',
+                courses: [
+                    { code: 'CS101', name: 'Introduction to Computer Science' },
+                    { code: 'CS202', name: 'Data Structures and Algorithms' },
+                    { code: 'CS303', name: 'Artificial Intelligence' },
+                ],
+                overallRating: 3.5,
+                emojiRatings: {
+                    '😡 Awful': 3,
+                    '😐 OK': 0,
+                    '🙂 Good': 1,
+                    '😄 Great': 0,
+                    '🤩 Awesome': 0,
+                },
+                chartData: {
+                    donut: [70, 30],
+                    nightingale: [80, 65, 45, 70], // Hardness included
+                },
+                comments: [
+                    'Great professor, explains the concepts clearly.👍',
+                    'Courses are challenging but rewarding.💯',
+                    'Very approachable and willing to help.😇',
+                ],
+            };
+            setProfessorData(fetchedData);
+        } else if (query) {
+            // Simulate fetching professor data based on the query (from App.js)
+            const fetchedData = {
+                name: query,
+                photo: '/images/Professor_image.png',
+                department: 'Computer Science Department',
+                contact: `${query.toLowerCase()}@university.edu`,
+                bio: `Professor ${query} is a well-respected faculty member with expertise in multiple areas.`,
+                courses: [
+                    { code: 'CS101', name: 'Introduction to Computer Science' },
+                    { code: 'CS202', name: 'Data Structures and Algorithms' },
+                    { code: 'CS303', name: 'Artificial Intelligence' },
+                ],
+                overallRating: 4.0,
+                emojiRatings: {
+                    '😡 Awful': 1,
+                    '😐 OK': 2,
+                    '🙂 Good': 4,
+                    '😄 Great': 5,
+                    '🤩 Awesome': 3,
+                },
+                chartData: {
+                    donut: [85, 15],
+                    nightingale: [90, 80, 60, 75],
+                },
+                comments: [
+                    'Excellent teaching style.👍',
+                    'Provides real-world examples.👌',
+                    'Courses are challenging but rewarding.💯',
+                ],
+            };
+            setProfessorData(fetchedData);
+        }
+    }, [professor, query]);
 
     const donutData = {
         labels: ['Yes', 'No'],
@@ -265,3 +297,4 @@ const ProfessorResultsPage = () => {
 };
 
 export default ProfessorResultsPage;
+

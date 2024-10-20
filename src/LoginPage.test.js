@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import LoginPage from './LoginPage';
 import { MemoryRouter } from 'react-router-dom';
-import '@testing-library/jest-dom';  // Import this to extend Jest with DOM-specific matchers
+import '@testing-library/jest-dom';  
 
 test('renders login page with all elements', () => {
     render(

@@ -1,12 +1,33 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
-import LoginPage from './LoginPage';  // Import the LoginPage component
-import ForgotPasswordPage from './ForgotPasswordPage'; // Import ForgotPasswordPage component
 
 const App = () => {
     const [searchQuery, setSearchQuery] = useState('');  // State to hold the search query
     const navigate = useNavigate();  // This hook will help navigate between pages
+    const location = useLocation();  // This hook helps to access the location state
+    const [logoutMessage, setLogoutMessage] = useState(''); // State to hold logout message
+
+    // Effect to check if there is a logout message in location state
+    useEffect(() => {
+        // Log location state for debugging
+        console.log("Location State: ", location.state);
+
+        // Check if the 'from' field in the state is '/landing'
+        if (location.state?.message && location.state?.from === '/landing') {
+            setLogoutMessage(location.state.message);
+            // Clear the message after a few seconds (optional, for better UX)
+            setTimeout(() => {
+                setLogoutMessage('');
+            }, 3000); // Adjust the delay as needed
+        }
+    }, [location.state]);
+
+    // Function to close the logout message manually
+    const closeLogoutMessage = () => {
+        setLogoutMessage(''); // Hide the message
+        navigate('/', { replace: true }); // Clear the state manually and prevent the message from reappearing
+    };
 
     // Navigate to the Login page
     const handleLoginClick = () => {
@@ -29,6 +50,18 @@ const App = () => {
 
     return (
         <div className="container">
+            {/* Display the logout message if it exists */}
+            {logoutMessage && (
+                <div className="logout-message">
+                    <img src="/images/bye.png" alt="Logout Icon" className="logout-icon" />
+                    <div>
+                        <strong>Logged Out</strong>
+                        <p>{logoutMessage}</p>
+                    </div>
+                    <button className="close-btn" onClick={closeLogoutMessage}>×</button>
+                </div>
+            )}
+
             <div className="login-buttons">
                 <button className="login-btn" onClick={handleLoginClick}>Login</button>
                 <button className="signup-btn" onClick={handleSignupClick}>SignUp</button>

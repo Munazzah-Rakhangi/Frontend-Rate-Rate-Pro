@@ -3,7 +3,7 @@ import SignupPage from './SignupPage';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';  // Import jest-dom matchers for better assertions
 
-// Mock console.log and console.error to suppress logs during tests
+
 beforeAll(() => {
     jest.spyOn(global.console, 'log').mockImplementation(() => jest.fn());
     jest.spyOn(global.console, 'error').mockImplementation(() => jest.fn());
@@ -117,3 +117,4 @@ test('displays error message on failed signup', async () => {
         expect(screen.getByText(/error creating user/i)).toBeInTheDocument();
     });
 });
+

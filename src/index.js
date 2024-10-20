@@ -7,7 +7,7 @@ import SignupPage from './SignupPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import LandingPage from './LandingPage';
 import SlidingMenu from './SlidingMenu';
-import ProfessorResultsPage from './ProfessorResultsPage';
+import ProfessorResultsPage from './ProfessorResultsPage'; 
 import PrivateRoute from './PrivateRoute'; // Import the PrivateRoute component
 
 ReactDOM.render(
@@ -37,9 +37,10 @@ ReactDOM.render(
             </PrivateRoute>
           } 
         />
-
-        {/* Public route */}
-        <Route path="/professor-results" element={<ProfessorResultsPage />} /> {/* Public route */}
+        <Route 
+          path="/professor-results" 
+          element={<ProfessorResultsPage />} 
+        />
       </Routes>
     </Router>
   </React.StrictMode>,

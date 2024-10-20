@@ -178,3 +178,41 @@ p {
   transform: scale(1.2); /* Slightly enlarge the icons on hover */
   filter: brightness(1.2); /* Increase brightness for the hover effect */
 }
+
+/* Add this CSS for the logout message styling */
+.logout-message {
+  position: absolute;
+  top: 80px; /* Place it below the login/signup buttons */
+  right: 50px; /* Align it with the login/signup buttons */
+  background-color: white;
+  color: #111;
+  padding: 10px 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add gap between icon and text */
+  z-index: 1000;
+  border: 1px solid #111;
+}
+
+/* Style for the door emoji icon */
+.logout-message img {
+  width: 80px;
+  height: auto;
+}
+
+/* Close button for the logout message */
+.logout-message .close-btn {
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  color: #555;
+}
+
+.logout-message .close-btn:hover {
+  color: #000;
+}
