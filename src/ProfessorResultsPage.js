@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { Doughnut, PolarArea, Bar } from 'react-chartjs-2';
 import './ProfessorResultsPage.css';
 
-// Register required Chart.js components
 import {
     Chart as ChartJS,
     ArcElement,
@@ -14,6 +13,7 @@ import {
     LinearScale,
     RadialLinearScale,
 } from 'chart.js';
+
 ChartJS.register(
     ArcElement,
     Tooltip,
@@ -26,83 +26,76 @@ ChartJS.register(
 
 const ProfessorResultsPage = () => {
     const location = useLocation();
-    const { professor, query } = location.state || {};  // Get both professor object or query
-    
+    const { professor } = location.state || {}; // Extract professor data from location state
+
     const [professorData, setProfessorData] = useState(null);
-
+    
     useEffect(() => {
-        if (professor) {
-            // When professor object is provided (e.g., from LandingPage.js)
-            const fetchedData = {
-                name: professor.username,
-                photo: '/images/Professor_image.png',
-                department: `${professor.major} Department`,
-                contact: 'john.doe@university.edu',
-                bio: 'Dr. John Doe is a distinguished professor with over 20 years of teaching experience.',
-                courses: [
-                    { code: 'CS101', name: 'Introduction to Computer Science' },
-                    { code: 'CS202', name: 'Data Structures and Algorithms' },
-                    { code: 'CS303', name: 'Artificial Intelligence' },
-                ],
-                overallRating: 3.5,
-                emojiRatings: {
-                    '😡 Awful': 3,
-                    '😐 OK': 0,
-                    '🙂 Good': 1,
-                    '😄 Great': 0,
-                    '🤩 Awesome': 0,
-                },
-                chartData: {
-                    donut: [70, 30],
-                    nightingale: [80, 65, 45, 70], // Hardness included
-                },
-                comments: [
-                    'Great professor, explains the concepts clearly.👍',
-                    'Courses are challenging but rewarding.💯',
-                    'Very approachable and willing to help.😇',
-                ],
-            };
-            setProfessorData(fetchedData);
-        } else if (query) {
-            // Simulate fetching professor data based on the query (from App.js)
-            const fetchedData = {
-                name: query,
-                photo: '/images/Professor_image.png',
-                department: 'Computer Science Department',
-                contact: `${query.toLowerCase()}@university.edu`,
-                bio: `Professor ${query} is a well-respected faculty member with expertise in multiple areas.`,
-                courses: [
-                    { code: 'CS101', name: 'Introduction to Computer Science' },
-                    { code: 'CS202', name: 'Data Structures and Algorithms' },
-                    { code: 'CS303', name: 'Artificial Intelligence' },
-                ],
-                overallRating: 4.0,
-                emojiRatings: {
-                    '😡 Awful': 1,
-                    '😐 OK': 2,
-                    '🙂 Good': 4,
-                    '😄 Great': 5,
-                    '🤩 Awesome': 3,
-                },
-                chartData: {
-                    donut: [85, 15],
-                    nightingale: [90, 80, 60, 75],
-                },
-                comments: [
-                    'Excellent teaching style.👍',
-                    'Provides real-world examples.👌',
-                    'Courses are challenging but rewarding.💯',
-                ],
-            };
-            setProfessorData(fetchedData);
-        }
-    }, [professor, query]);
+        let professorName, professorDepartment, professorEmail;
 
+        if (professor && professor.username) {
+            professorName = professor.username;
+            professorDepartment = professor.department;
+            professorEmail = professor.email;
+        } else {
+            // Try to retrieve professor details from localStorage if not passed through state
+            const storedProfessor = localStorage.getItem('selectedProfessor');
+            if (storedProfessor) {
+                const { username, department, email } = JSON.parse(storedProfessor);
+                professorName = username;
+                professorDepartment = department;
+                professorEmail = email;
+            } else {
+                professorName = 'Unknown Professor';
+                professorDepartment = 'Unknown Department';
+                professorEmail = 'Unknown Email';
+            }
+        }
+
+        // Fetch data from API
+        fetch('http://54.144.209.246:8000/v1/fetch/overallrating/?professor_id=1') // Replace with your actual API endpoint
+            .then((response) => response.json())
+            .then((data) => {
+                // Map API response to the required structure
+                const fetchedData = {
+                    name: professorName,
+                    department: professorDepartment,
+                    email: professorEmail, // Store the email
+                    photo: '/images/Professor_image.png', // Assume this stays static
+                    bio: 'Dr. John Doe is a distinguished professor of Computer Science with over 20 years of teaching experience in AI and Data Science.', // Static for now
+                    courses: data.courses.map((course) => ({ code: '', name: course })), // Mapping API course data
+                    overallRating: data.overall_rating,
+                    emojiRatings: {
+                        '😡 Awful': 1,
+                        '😐 OK': 2,
+                        '🙂 Good': 4,
+                        '😄 Great': 3,
+                        '🤩 Awesome': 1,
+                    },
+                    chartData: {
+                        donut: [data.would_take_again["1"], data.would_take_again["0"]],
+                        nightingale: [
+                            data.academic_ability,
+                            data.teaching_ability,
+                            data.interactions_with_students,
+                            data.hardness,
+                        ],
+                    },
+                    comments: data.feedback,
+                };
+                setProfessorData(fetchedData);
+            })
+            .catch((error) => {
+                console.error('Error fetching professor data:', error);
+            });
+    }, [professor]);
+
+    // Donut chart for "Would take again?"
     const donutData = {
         labels: ['Yes', 'No'],
         datasets: [
             {
-                label: 'Would like to take it again?',
+                label: 'Votes',
                 data: professorData ? professorData.chartData.donut : [0, 0],
                 backgroundColor: ['#36A2EB', '#FF6384'],
                 hoverOffset: 4,
@@ -119,13 +112,14 @@ const ProfessorResultsPage = () => {
         maintainAspectRatio: false, // Ensure the chart fits its container
     };
 
+    // Nightingale chart for professor ratings
     const nightingaleData = {
-        labels: ['Academic Ability', 'Teaching Quality', 'Interaction with Students', 'Hardness'], // Added "Hardness"
+        labels: ['Academic Ability', 'Teaching Quality', 'Interaction with Students', 'Hardness'],
         datasets: [
             {
                 label: 'Ratings',
-                data: professorData ? professorData.chartData.nightingale : [0, 0, 0, 0], // Updated data to include Hardness
-                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0'], // Added color for Hardness
+                data: professorData ? professorData.chartData.nightingale : [0, 0, 0, 0],
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0'],
                 borderColor: '#fff',
                 borderWidth: 1,
             },
@@ -133,21 +127,22 @@ const ProfessorResultsPage = () => {
     };
 
     const nightingaleOptions = {
-        maintainAspectRatio: false, // Allow the chart to grow to fill the container
+        maintainAspectRatio: false,
         scales: {
             r: {
                 ticks: {
-                    display: false, // Remove inner axis labels for a cleaner look
+                    display: false,
                 },
             },
         },
         plugins: {
             legend: {
-                display: false, // Hide the legend labels
+                display: false,
             },
         },
     };
 
+    // Emoji-based bar chart
     const emojiBarData = {
         labels: professorData ? Object.keys(professorData.emojiRatings) : [],
         datasets: [
@@ -170,7 +165,7 @@ const ProfessorResultsPage = () => {
         },
         plugins: {
             legend: {
-                display: false, // Remove the legend for the emoji bar chart
+                display: false,
             },
             tooltip: {
                 callbacks: {
@@ -189,6 +184,7 @@ const ProfessorResultsPage = () => {
         <div className="professor-results-container">
             {professorData ? (
                 <div className="professor-results-content">
+                {/* Professor Profile Section */}
                     <div className="professor-profile-section card">
                         <img
                             src={professorData.photo}
@@ -197,24 +193,25 @@ const ProfessorResultsPage = () => {
                         />
                         <h3>{professorData.name}</h3>
                         <p>{professorData.department}</p>
-                        <p>Email: {professorData.contact}</p>
+                        <p>Email: {professorData.email}</p> {/* Display the email */}
                         <div className="button-container">
                             <button className="compare-button">Compare</button>
                             <button className="rate-button">Rate</button>
                         </div>
                     </div>
-
+                    {/* Courses Section */}
                     <div className="professor-courses-section card">
                         <h2 className="card-title">List of Courses</h2>
                         <ul>
-                            {professorData.courses?.map((course) => (
-                                <li key={course.code}>
-                                    <span className="course-code">{course.code}:</span> {course.name}
+                        {professorData.courses?.map((course, index) => (
+                                <li key={index}>
+                                    <span className="course-code">{course.code}</span> {course.name}
                                 </li>
                             ))}
                         </ul>
                     </div>
 
+                    {/* Data Visualization Section */}
                     <div className="professor-data-visualization-section card">
                         <h2 className="card-title">Ratings and Visualizations</h2>
                         <div className="visualizations">
@@ -244,10 +241,9 @@ const ProfessorResultsPage = () => {
                             </div>
                         </div>
 
-                        {/* Separate Legends Section */}
+                        {/* Legends Section */}
                         <div className="chart-legends">
                             <div className="donut-chart-legend">
-                                {/* <h3>Donut Chart Legend</h3> */}
                                 <div className="donut-legend-item">
                                     <span className="donut-legend-color" style={{ backgroundColor: '#36A2EB' }}></span>
                                     Yes
@@ -259,7 +255,6 @@ const ProfessorResultsPage = () => {
                             </div>
 
                             <div className="nightingale-chart-legend">
-                                {/* <h3>Nightingale Chart Legend</h3> */}
                                 <div className="nightingale-legend-item">
                                     <span className="nightingale-legend-color" style={{ backgroundColor: '#36A2EB' }}></span>
                                     Academic Ability
@@ -297,4 +292,3 @@ const ProfessorResultsPage = () => {
 };
 
 export default ProfessorResultsPage;
-

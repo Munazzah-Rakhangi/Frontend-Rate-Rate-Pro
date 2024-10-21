@@ -10,9 +10,6 @@ const App = () => {
 
     // Effect to check if there is a logout message in location state
     useEffect(() => {
-        // Log location state for debugging
-        console.log("Location State: ", location.state);
-
         // Check if the 'from' field in the state is '/landing'
         if (location.state?.message && location.state?.from === '/landing') {
             setLogoutMessage(location.state.message);
@@ -40,11 +37,25 @@ const App = () => {
     };
 
     // Handle the search and navigate to the Professor Results Page
-    const handleSearch = () => {
-        // Check if searchQuery is not empty
+    const handleSearch = async () => {
         if (searchQuery.trim() !== '') {
-            // Navigate to the Professor Results Page and pass the searchQuery as a state or query parameter
-            navigate('/professor-results', { state: { query: searchQuery } });
+            // Assuming you have an API to fetch professor based on the search query
+            try {
+                const response = await fetch(`http://54.144.209.246:8000/v1/user/search/?query=${searchQuery}`);
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.length > 0) {
+                        const professor = result[0]; // Assuming the first result matches
+                        navigate('/professor-results', { state: { professor } });
+                    } else {
+                        alert("No results found");
+                    }
+                } else {
+                    console.error("Error fetching search results");
+                }
+            } catch (error) {
+                console.error(error.message);
+            }
         }
     };
 

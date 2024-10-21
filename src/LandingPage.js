@@ -22,7 +22,7 @@ const LandingPage = () => {
         const handlePopState = () => {
             if (location.pathname === '/landing') {
                 localStorage.removeItem('user'); // Clear user data from localStorage
-                navigate('/', { state: { message: "You have been logged out. See you soon!", from: '/landing' } }); // Ensure 'from' is set to '/landing'
+                navigate('/', { state: { message: "You have been logged out. See you soon!", from: '/landing' } });
             }
         };
 
@@ -66,8 +66,29 @@ const LandingPage = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('user'); // Remove user data from localStorage
-        navigate('/', { state: { message: "You have been logged out. See you soon!", from: '/landing' } }); // Ensure 'from' is set to '/landing'
+        navigate('/', { state: { message: "You have been logged out. See you soon!", from: '/landing' } });
     };
+
+    const handleProfessorSelect = (professor) => {
+        // Store professor details in local storage
+        localStorage.setItem('selectedProfessor', JSON.stringify({
+            username: professor.username,
+            department: professor.major,  // Assuming 'major' is the department
+        }));
+        
+        // Navigate to the professor results page
+        navigate('/professor-results', {
+            state: {
+                professor: {
+                    username: professor.username,
+                    department: professor.major,  // Pass the dynamic department
+                    email: professor.email,
+                    id: professor.userid,  // Assuming you have an ID
+                },
+            },
+        });
+    };
+    
 
     return (
         <div className="landing-container">
@@ -88,13 +109,13 @@ const LandingPage = () => {
 
             <div className="center-content">
                 <h1 className="landing-title">Rate Rate Professor</h1>
-                <p className="landing-subtitle">Enter your major and get started</p>
+                <p className="landing-subtitle">Enter professor name and start rating</p>
                 <img src="/images/Books.png" alt="Books" className="books-icon" />
 
                 <div className="search-bar">
                     <input
                         type="text"
-                        placeholder="Enter your major..."
+                        placeholder="Enter professor name...."
                         value={searchTerm}
                         onChange={handleSearchChange}
                     />
@@ -108,7 +129,7 @@ const LandingPage = () => {
                                 <div
                                     key={result.userid}
                                     className="search-dropdown-item"
-                                    onClick={() => navigate('/professor-results', { state: { professor: result } })}
+                                    onClick={() => handleProfessorSelect(result)} // Pass the professor data when clicked
                                 >
                                     {result.username} ({result.role}) - {result.major}
                                 </div>
