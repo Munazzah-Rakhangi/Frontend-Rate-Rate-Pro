@@ -4,64 +4,65 @@ import './App.css';
 
 const App = () => {
     const [searchQuery, setSearchQuery] = useState('');  // State to hold the search query
-    const navigate = useNavigate();  // This hook will help navigate between pages
-    const location = useLocation();  // This hook helps to access the location state
+    const [searchResults, setSearchResults] = useState([]);  // State to hold search results
+    const navigate = useNavigate();  // To navigate between pages
+    const location = useLocation();  // Access the location state
     const [logoutMessage, setLogoutMessage] = useState(''); // State to hold logout message
 
-    // Effect to check if there is a logout message in location state
     useEffect(() => {
         // Check if the 'from' field in the state is '/landing'
         if (location.state?.message && location.state?.from === '/landing') {
             setLogoutMessage(location.state.message);
-            // Clear the message after a few seconds (optional, for better UX)
             setTimeout(() => {
                 setLogoutMessage('');
-            }, 3000); // Adjust the delay as needed
+            }, 3000);
         }
     }, [location.state]);
 
-    // Function to close the logout message manually
     const closeLogoutMessage = () => {
-        setLogoutMessage(''); // Hide the message
-        navigate('/', { replace: true }); // Clear the state manually and prevent the message from reappearing
+        setLogoutMessage('');
+        navigate('/', { replace: true });
     };
 
-    // Navigate to the Login page
     const handleLoginClick = () => {
         navigate('/login');
     };
 
-    // Navigate to the Signup page
     const handleSignupClick = () => {
         navigate('/signup');
     };
 
-    // Handle the search and navigate to the Professor Results Page
-    const handleSearch = async () => {
-        if (searchQuery.trim() !== '') {
-            // Assuming you have an API to fetch professor based on the search query
+    // Fetch the search results from the API
+    const handleSearch = async (query) => {
+        setSearchQuery(query);  // Update search query state
+        if (query.trim() !== '') {
             try {
-                const response = await fetch(`http://54.144.209.246:8000/v1/user/search/?query=${searchQuery}`);
+                const response = await fetch(`http://54.144.209.246:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
                     const result = await response.json();
-                    if (result.length > 0) {
-                        const professor = result[0]; // Assuming the first result matches
-                        navigate('/professor-results', { state: { professor } });
-                    } else {
-                        alert("No results found");
-                    }
+                    setSearchResults(result); // Store search results
                 } else {
                     console.error("Error fetching search results");
+                    setSearchResults([]); // Reset results if there's an error
                 }
             } catch (error) {
                 console.error(error.message);
+                setSearchResults([]); // Reset results on error
             }
+        } else {
+            setSearchResults([]); // Clear search results if the query is empty
         }
+    };
+
+    // Handle when a professor is selected from the dropdown
+    const handleResultSelect = (professor) => {
+        navigate('/professor-results', { state: { professor } });
+        setSearchQuery('');  // Clear the search query
+        setSearchResults([]);  // Hide the dropdown
     };
 
     return (
         <div className="container">
-            {/* Display the logout message if it exists */}
             {logoutMessage && (
                 <div className="logout-message">
                     <img src="/images/bye.png" alt="Logout Icon" className="logout-icon" />
@@ -78,31 +79,44 @@ const App = () => {
                 <button className="signup-btn" onClick={handleSignupClick}>SignUp</button>
             </div>
 
-            {/* Add the sticker at the top-left corner */}
             <img src="/images/rating-system.png" alt="Rating System Sticker" className="sticker-top-left" />
 
-            <h1>Rate Rate Professor</h1>
+            <h1>Rate Your Professor</h1>
+            <p>Enter the name of your professor and start rating.</p>
 
-            <p>Enter the name of your professor or department and start rating.</p>
-
-            {/* Thumbs up image inserted here */}
             <img src="/images/thumps_up.png" alt="Thumbs Up" className="thumbs-up" />
 
-            {/* Search bar with a button to trigger the search */}
+            {/* Search bar with dropdown results */}
             <div className="search-bar">
                 <input
                     type="text"
-                    placeholder="Search for professor or department....."
+                    placeholder="Search for professor..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}  // Update search query state
+                    onChange={(e) => handleSearch(e.target.value)}  // Call handleSearch on input change
                 />
-                <img
-                    src="/images/search.png"
-                    alt="Search Icon"
-                    className="search-icon"
-                    onClick={handleSearch}  // Trigger the search on click
-                    style={{ cursor: 'pointer' }}
-                />
+                {/* {searchResults.length > 0 && (
+                    <ul className="search-dropdown">
+                        {searchResults.map((professor) => (
+                            <li key={professor.userid} onClick={() => handleResultSelect(professor)}>
+                                {professor.username} ({professor.role})
+                            </li>
+                        ))}
+                    </ul>
+                )} */}
+
+                {searchResults.length > 0 && (
+                        <div className="search-dropdown">
+                            {searchResults.map((professor) => (
+                                <div
+                                    key={professor.userid}
+                                    className="search-dropdown-item"
+                                    onClick={() => handleResultSelect(professor)} >
+                                    {professor.username} ({professor.role})
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
             </div>
 
             <div className="footer-links">

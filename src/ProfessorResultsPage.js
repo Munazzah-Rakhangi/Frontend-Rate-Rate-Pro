@@ -31,7 +31,7 @@ const ProfessorResultsPage = () => {
     const [professorData, setProfessorData] = useState(null);
     
     useEffect(() => {
-        let professorName, professorDepartment, professorEmail;
+        let professorName, professorDepartment, professorEmail, professorId;
 
         if (professor && professor.username) {
             professorName = professor.username;
@@ -45,6 +45,7 @@ const ProfessorResultsPage = () => {
                 professorName = username;
                 professorDepartment = department;
                 professorEmail = email;
+                // professorId = id
             } else {
                 professorName = 'Unknown Professor';
                 professorDepartment = 'Unknown Department';
@@ -53,7 +54,7 @@ const ProfessorResultsPage = () => {
         }
 
         // Fetch data from API
-        fetch('http://54.144.209.246:8000/v1/fetch/overallrating/?professor_id=1') // Replace with your actual API endpoint
+        fetch('http://54.144.209.246:8000/v1/fetch/overallrating/?professor_id='+professorData.professorId) // Replace with your actual API endpoint
             .then((response) => response.json())
             .then((data) => {
                 // Map API response to the required structure
