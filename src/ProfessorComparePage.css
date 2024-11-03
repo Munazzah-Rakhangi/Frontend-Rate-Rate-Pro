@@ -10,17 +10,18 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    margin-top: 80px; /* Shift everything down */
 }
 
 /* Top-left heading styling */
 .professor-compare-heading {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+    position: relative; /* Changed from absolute to relative */
     font-size: 1.5em;
     font-weight: bold;
     color: #333;
     margin: 0;
+    align-self: flex-start;
+    padding-left: 20px;
 }
 
 /* Search bar container styling */
@@ -28,7 +29,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 60px; /* Space from the heading */
+    margin-top: 20px; /* Space from the heading */
     padding: 0 20px;
     box-sizing: border-box;
 }
@@ -36,17 +37,18 @@
 .search-bar {
     width: 100%;
     max-width: 500px;
-    padding: 10px 15px;
+    padding: 10px 20px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 30px; /* Rounded, pill-shaped search bar */
     font-size: 1em;
     outline: none;
     box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .search-bar:focus {
     border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2); /* Add subtle shadow on focus */
 }
 
 /* Section to hold professor comparison cards */
@@ -92,12 +94,11 @@
 @media (max-width: 768px) {
     .professor-compare-heading {
         font-size: 1.2em;
-        top: 10px;
-        left: 10px;
+        padding-left: 10px;
     }
 
     .search-bar-container {
-        margin-top: 40px;
+        margin-top: 20px;
     }
 
     .professor-compare-section {

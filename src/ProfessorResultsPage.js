@@ -30,7 +30,7 @@ const ProfessorResultsPage = () => {
     const { professor } = location.state || {};
 
     const [professorData, setProfessorData] = useState(null);
-
+    
     useEffect(() => {
         let professorName, professorDepartment, professorEmail;
 
@@ -52,36 +52,7 @@ const ProfessorResultsPage = () => {
             }
         }
 
-        const mockData = {
-            name: professorName,
-            department: professorDepartment,
-            email: professorEmail,
-            photo: '/images/Professor_image.png',
-            bio: 'Dr. John Doe is a distinguished professor of Computer Science with over 20 years of teaching experience in AI and Data Science.',
-            courses: [
-                { code: 'CS101', name: 'Introduction to Computer Science' },
-                { code: 'CS102', name: 'Data Structures' }
-            ],
-            overallRating: 4.5,
-            emojiRatings: {
-                '😡 Awful': 1,
-                '😐 OK': 2,
-                '🙂 Good': 4,
-                '😄 Great': 3,
-                '🤩 Awesome': 1,
-            },
-            chartData: {
-                donut: [3, 1],
-                nightingale: [4.5, 4.2, 3.8, 2.5],
-            },
-            comments: [
-                'Great professor!',
-                'Very clear explanations.',
-                'Helpful and approachable.',
-            ],
-        };
-
-        fetch('http://33.88.219.13:8000/v1/fetch/overallrating/?professor_id=1') 
+        fetch('http://3.88.219.13:8000/v1/fetch/overallrating/?professor_id=1') 
             .then((response) => response.json())
             .then((data) => {
                 const fetchedData = {
@@ -90,7 +61,7 @@ const ProfessorResultsPage = () => {
                     email: professorEmail,
                     photo: '/images/Professor_image.png',
                     bio: 'Dr. John Doe is a distinguished professor of Computer Science with over 20 years of teaching experience in AI and Data Science.',
-                    courses: data.courses.map((course) => ({ code: '', name: course })),
+                    courses: data.courses.map((course) => ({ name: course.name || 'Course Name Unavailable' })),
                     overallRating: data.overall_rating,
                     emojiRatings: {
                         '😡 Awful': 1,
@@ -113,13 +84,12 @@ const ProfessorResultsPage = () => {
                 setProfessorData(fetchedData);
             })
             .catch((error) => {
-                console.error('Error fetching professor data, using mock data:', error);
-                setProfessorData(mockData);
+                console.error('Error fetching professor data:', error);
             });
     }, [professor]);
 
     const handleRateClick = () => {
-        navigate('/rating');
+        navigate('/rating', { state: { professor } });
     };
 
     const handleCompareClick = () => {
@@ -231,13 +201,12 @@ const ProfessorResultsPage = () => {
                             <button className="rate-button" onClick={handleRateClick}>Rate</button>
                         </div>
                     </div>
+                    
                     <div className="professor-courses-section card">
                         <h2 className="card-title">List of Courses</h2>
                         <ul>
-                            {professorData.courses?.map((course, index) => (
-                                <li key={index}>
-                                    <span className="course-code">{course.code}</span> {course.name}
-                                </li>
+                        {professorData.courses?.map((course, index) => (
+                                <li key={index}>{course.name}</li>
                             ))}
                         </ul>
                     </div>
@@ -267,6 +236,38 @@ const ProfessorResultsPage = () => {
                                         <span className="score-value">{professorData.overallRating}</span>
                                         <span className="score-max">/5</span>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="chart-legends">
+                            <div className="donut-chart-legend">
+                                <div className="donut-legend-item">
+                                    <span className="donut-legend-color" style={{ backgroundColor: '#36A2EB' }}></span>
+                                    Yes
+                                </div>
+                                <div className="donut-legend-item">
+                                    <span className="donut-legend-color" style={{ backgroundColor: '#FF6384' }}></span>
+                                    No
+                                </div>
+                            </div>
+
+                            <div className="nightingale-chart-legend">
+                                <div className="nightingale-legend-item">
+                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#36A2EB' }}></span>
+                                    Academic Ability
+                                </div>
+                                <div className="nightingale-legend-item">
+                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#FF6384' }}></span>
+                                    Teaching Quality
+                                </div>
+                                <div className="nightingale-legend-item">
+                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#FFCE56' }}></span>
+                                    Interaction with Students
+                                </div>
+                                <div className="nightingale-legend-item">
+                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#4BC0C0' }}></span>
+                                    Hardness
                                 </div>
                             </div>
                         </div>
