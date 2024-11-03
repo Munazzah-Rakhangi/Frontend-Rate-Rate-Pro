@@ -37,7 +37,7 @@ const App = () => {
         setSearchQuery(query);  // Update search query state
         if (query.trim() !== '') {
             try {
-                const response = await fetch(`http://54.144.209.246:8000/v1/user/search/?query=${query}`);
+                const response = await fetch(`http://3.88.219.13:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
                     const result = await response.json();
                     setSearchResults(result); // Store search results

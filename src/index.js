@@ -7,8 +7,10 @@ import SignupPage from './SignupPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import LandingPage from './LandingPage';
 import SlidingMenu from './SlidingMenu';
-import ProfessorResultsPage from './ProfessorResultsPage'; 
-import PrivateRoute from './PrivateRoute'; // Import the PrivateRoute component
+import ProfessorResultsPage from './ProfessorResultsPage';
+import RatingPage from './RatingPage';
+import PrivateRoute from './PrivateRoute';
+import ProfessorComparePage from './ProfessorComparePage'; // Import the ProfessorComparePage component
 
 ReactDOM.render(
   <React.StrictMode>
@@ -40,6 +42,18 @@ ReactDOM.render(
         <Route 
           path="/professor-results" 
           element={<ProfessorResultsPage />} 
+        />
+        
+        {/* Route for Rating Page */}
+        <Route 
+          path="/rating" 
+          element={<RatingPage />} 
+        />
+
+        {/* Public Route for Professor Compare Page */}
+        <Route 
+          path="/professor-compare" 
+          element={<ProfessorComparePage />} 
         />
       </Routes>
     </Router>

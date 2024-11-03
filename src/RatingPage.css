@@ -1,0 +1,250 @@
+/* Full-screen container styling */
+.rating-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%; /* Fit to viewport */
+  height: 100vh;
+  background-color: #f9f9f9;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden; /* Disable horizontal scrolling */
+  box-sizing: border-box;
+}
+
+/* Top row styling */
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+/* HomePage button styling */
+.home-button {
+  position: absolute;
+  left: 2px;
+  top: -10px;
+  background-color: #000;
+  color: #fff;
+  padding: 12px 25px; /* Increased padding for larger size */
+  border-radius: 25px; /* Increased border radius for rounded corners */
+  font-size: 1.2rem; /* Increased font size */
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+/* Username button styling */
+.username-button {
+  position: absolute;
+  right: 5px;
+  top: -10px;
+  background-color: #000;
+  color: #fff;
+  padding: 12px 25px; /* Increased padding for larger size */
+  border-radius: 25px; /* Increased border radius for rounded corners */
+  font-size: 1.2rem; /* Increased font size */
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+/* Details row styling */
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 40px; /* Additional margin to shift down */
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+/* Course and Professor info styling */
+.course-info, .prof-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 48%; /* Fit within row */
+}
+
+/* Form input styling */
+.detail-input {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Form styling */
+.rating-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  margin-top: 40px; /* Additional margin to shift the form down */
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+label {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Timeline container styling */
+.timeline-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+  height: 30px;
+}
+
+.timeline-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: #ccc;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.timeline-marker {
+  width: 20px;
+  height: 20px;
+  background-color: #2c2c2c;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-marker.active {
+  background-color: #1a66e9;
+}
+
+.timeline-marker:hover {
+  background-color: #1a66e9;
+}
+
+/* Labels below markers */
+.slider-labels-below {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Textarea styling */
+textarea {
+  width: 100%;
+  height: 100px;
+  box-sizing: border-box;
+}
+
+/* Submit button styling (like the home and username buttons) */
+.submit-button {
+  background-color: #000;
+  color: #fff;
+  padding: 12px 25px; /* Matches the size of home and username buttons */
+  border-radius: 25px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.submit-button:hover {
+  background-color: #333; /* Darker shade on hover */
+}
+
+/* Modal overlay styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top */
+}
+
+/* Modal content styling */
+.modal-content {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 1.2rem;
+}
+
+.modal-content span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  /* Stack top buttons on smaller screens */
+  .top-row {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+
+  .home-button, .username-button {
+    position: static; /* Prevent absolute positioning on smaller screens */
+    margin-bottom: 10px;
+  }
+
+  /* Stack course and prof info vertically */
+  .details-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .course-info, .prof-info {
+    width: 100%; /* Full width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  label {
+    font-size: 1rem;
+  }
+
+  .top-button {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+  }
+
+  .submit-button {
+    padding: 8px 15px;
+  }
+}
