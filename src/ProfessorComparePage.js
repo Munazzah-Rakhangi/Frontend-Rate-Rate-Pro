@@ -26,6 +26,14 @@ const ProfessorComparePage = () => {
         setShowThirdColumn(false);
     };
 
+    const chartOptions = {
+        maintainAspectRatio: true, // Preserve aspect ratio
+        responsive: true,
+        plugins: {
+            legend: { display: false } // Remove legend for all charts
+        }
+    };
+
     const wouldTakeAgainData = {
         labels: ['Yes', 'No'],
         datasets: [
@@ -63,14 +71,6 @@ const ProfessorComparePage = () => {
         ],
     };
 
-    const chartOptions = {
-        maintainAspectRatio: false,
-        responsive: true,
-        plugins: {
-            legend: { display: false } // Remove legend for all charts
-        }
-    };
-
     return (
         <div className="professor-compare-container">
             <button className="compare-home-button">Home</button>
@@ -82,7 +82,6 @@ const ProfessorComparePage = () => {
             </div>
 
             <div className="cards-container">
-                {/* First Column of Cards */}
                 <div className="professor-card-column">
                     {professorData && (
                         <div className="professor-card">
@@ -112,7 +111,6 @@ const ProfessorComparePage = () => {
                     </div>
                 </div>
 
-                {/* Second Column of Cards with Close Button */}
                 {showSecondColumn && (
                     <div className="professor-card-column second-column">
                         <div className="professor-card">
@@ -137,7 +135,6 @@ const ProfessorComparePage = () => {
                     </div>
                 )}
 
-                {/* Third Column of Cards with Close Button */}
                 {showThirdColumn && (
                     <div className="professor-card-column third-column">
                         <div className="professor-card">
