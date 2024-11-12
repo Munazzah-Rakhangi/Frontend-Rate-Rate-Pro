@@ -3,14 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 
 const App = () => {
-    const [searchQuery, setSearchQuery] = useState('');  // State to hold the search query
-    const [searchResults, setSearchResults] = useState([]);  // State to hold search results
-    const navigate = useNavigate();  // To navigate between pages
-    const location = useLocation();  // Access the location state
-    const [logoutMessage, setLogoutMessage] = useState(''); // State to hold logout message
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [logoutMessage, setLogoutMessage] = useState('');
 
     useEffect(() => {
-        // Check if the 'from' field in the state is '/landing'
         if (location.state?.message && location.state?.from === '/landing') {
             setLogoutMessage(location.state.message);
             setTimeout(() => {
@@ -32,33 +31,46 @@ const App = () => {
         navigate('/signup');
     };
 
-    // Fetch the search results from the API
+    // Fetch search results from the API
     const handleSearch = async (query) => {
-        setSearchQuery(query);  // Update search query state
+        setSearchQuery(query);
         if (query.trim() !== '') {
             try {
                 const response = await fetch(`http://3.88.219.13:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
                     const result = await response.json();
-                    setSearchResults(result); // Store search results
+                    console.log("Search Results:", result);  // Log to check if department is present
+                    setSearchResults(result);
                 } else {
                     console.error("Error fetching search results");
-                    setSearchResults([]); // Reset results if there's an error
+                    setSearchResults([]);
                 }
             } catch (error) {
                 console.error(error.message);
-                setSearchResults([]); // Reset results on error
+                setSearchResults([]);
             }
         } else {
-            setSearchResults([]); // Clear search results if the query is empty
+            setSearchResults([]);
         }
     };
 
     // Handle when a professor is selected from the dropdown
     const handleResultSelect = (professor) => {
+        // Store selected professor data in local storage, including department
+        localStorage.setItem(
+            'selectedProfessor',
+            JSON.stringify({
+                id: professor.userid, // Assuming `userid` is the professor's ID
+                username: professor.username,
+                department: professor.major, // Add department here
+                email: professor.email,
+            })
+        );
+
+        // Navigate to the ProfessorResultsPage with professor details in state
         navigate('/professor-results', { state: { professor } });
-        setSearchQuery('');  // Clear the search query
-        setSearchResults([]);  // Hide the dropdown
+        setSearchQuery('');
+        setSearchResults([]);
     };
 
     return (
@@ -86,37 +98,26 @@ const App = () => {
 
             <img src="/images/thumps_up.png" alt="Thumbs Up" className="thumbs-up" />
 
-            {/* Search bar with dropdown results */}
             <div className="search-bar">
                 <input
                     type="text"
                     placeholder="Search for professor..."
                     value={searchQuery}
-                    onChange={(e) => handleSearch(e.target.value)}  // Call handleSearch on input change
+                    onChange={(e) => handleSearch(e.target.value)}
                 />
-                {/* {searchResults.length > 0 && (
-                    <ul className="search-dropdown">
-                        {searchResults.map((professor) => (
-                            <li key={professor.userid} onClick={() => handleResultSelect(professor)}>
-                                {professor.username} ({professor.role})
-                            </li>
-                        ))}
-                    </ul>
-                )} */}
-
                 {searchResults.length > 0 && (
-                        <div className="search-dropdown">
-                            {searchResults.map((professor) => (
-                                <div
-                                    key={professor.userid}
-                                    className="search-dropdown-item"
-                                    onClick={() => handleResultSelect(professor)} >
-                                    {professor.username} ({professor.role})
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
+                    <div className="search-dropdown">
+                        {searchResults.map((professor) => (
+                            <div
+                                key={professor.userid}
+                                className="search-dropdown-item"
+                                onClick={() => handleResultSelect(professor)}
+                            >
+                                {professor.username} ({professor.role})
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <div className="footer-links">

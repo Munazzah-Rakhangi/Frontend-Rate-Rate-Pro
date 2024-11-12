@@ -1,115 +1,245 @@
-/* Main container styling */
+/* Apply the Liberation Mono font */
+body {
+  background-color: #cbe3ff;
+  font-family: 'Liberation Mono', monospace;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+/* Main container styling with page-level scrollbar */
 .professor-compare-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    min-height: 100vh;
-    background-color: #f9f9f9;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    margin-top: 80px; /* Shift everything down */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 100vh;
+  background-color: #f9f9f9;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-/* Top-left heading styling */
+/* Home and Username buttons */
+.compare-home-button, .compare-username-button {
+  position: absolute;
+  background-color: #000;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.compare-home-button {
+  left: 25px;
+  top: 20px;
+}
+
+.compare-username-button {
+  right: 25px;
+  top: 20px;
+}
+
+/* Centered heading styling */
 .professor-compare-heading {
-    position: relative; /* Changed from absolute to relative */
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
-    align-self: flex-start;
-    padding-left: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-top: 90px;
+  margin-bottom: 10px;
 }
 
-/* Search bar container styling */
-.search-bar-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 20px; /* Space from the heading */
-    padding: 0 20px;
-    box-sizing: border-box;
+/* Center the rating search bar */
+.rating-search-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.search-bar {
-    width: 100%;
-    max-width: 500px;
-    padding: 10px 20px;
-    border: 1px solid #ccc;
-    border-radius: 30px; /* Rounded, pill-shaped search bar */
-    font-size: 1em;
-    outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.rating-search-bar input {
+  width: 350px;
+  padding: 8px 50px 8px 20px;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  border-radius: 50px;
+  border: 2px solid #ccc;
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-.search-bar:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2); /* Add subtle shadow on focus */
+/* Hover and focus effect for the rating search bar */
+.rating-search-bar input:hover, 
+.rating-search-bar input:focus {
+  border-color: #7FA1C3;
+  box-shadow: 0 0 8px rgba(106, 154, 176, 0.5);
+  background-color: #e6e6e6;
+  outline: none;
 }
 
-/* Section to hold professor comparison cards */
-.professor-compare-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    width: 90%;
-    max-width: 1200px;
-    margin-top: 20px; /* Space from the search bar */
-    padding: 20px;
+/* Container for three columns of div cards */
+.cards-container {
+  display: flex;
+  gap: 30px;
+  padding-left: 40px;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-/* Individual professor card styling */
+/* Container for a column of div cards */
+.professor-card-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 360px;
+  margin-left: -82px;
+}
+
+/* Specific adjustment for the second and third columns */
+.professor-card-column.second-column {
+  margin-left: 20px;
+}
+
+.professor-card-column.third-column {
+  margin-left: 20px;
+}
+
+/* Uniform styling for all professor cards */
 .professor-card {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: calc(50% - 20px);
-    max-width: 400px;
-    min-width: 280px;
-    text-align: left;
-    box-sizing: border-box;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 250px;
+  max-width: 360px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
 }
 
-/* Professor card heading */
-.professor-card h2 {
-    font-size: 1.25em;
-    margin-bottom: 10px;
-    font-weight: bold;
+/* New class for the professor card heading */
+.professor-card-heading {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Close button styling */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: #333;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
 }
 
 /* Professor card paragraph styling */
 .professor-card p {
-    margin: 5px 0;
-    font-size: 1em;
-    color: #333;
+  margin: 4px 0;
+  font-size: 1em;
+  color: #333;
+}
+
+/* Default chart size in the first column */
+.donut-chart-container,
+.nightingale-chart-container,
+.emoji-bar-chart-container {
+  width: 100%;
+  max-width: 220px;
+  height: 220px;
+  margin: 0 auto;
+}
+
+/* Smaller chart size for second and third columns */
+.professor-card-column.second-column .donut-chart-container,
+.professor-card-column.second-column .nightingale-chart-container,
+.professor-card-column.second-column .emoji-bar-chart-container,
+.professor-card-column.third-column .donut-chart-container,
+.professor-card-column.third-column .nightingale-chart-container,
+.professor-card-column.third-column .emoji-bar-chart-container {
+  max-width: 180px; /* Reduced width */
+  height: 180px; /* Reduced height */
+}
+
+/* Specific styles for Donut, Nightingale, and Emoji-Based Rating cards */
+.donut-card,
+.nightingale-card,
+.emoji-card {
+  padding: 20px;
+  height: 250px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.donut-card h2,
+.nightingale-card h2,
+.emoji-card h2 {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.emoji-card h2 {
+  margin-top: -5px;
 }
 
 /* Responsive adjustments for smaller screens */
+@media (max-width: 1024px) {
+  .professor-card-column {
+    max-width: 90%;
+  }
+
+  .professor-card {
+    height: auto;
+  }
+
+  .donut-chart-container,
+  .nightingale-chart-container,
+  .emoji-bar-chart-container {
+    max-width: 150px;
+    height: 150px;
+  }
+}
+
 @media (max-width: 768px) {
-    .professor-compare-heading {
-        font-size: 1.2em;
-        padding-left: 10px;
-    }
+  /* Stack columns vertically on small screens */
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .search-bar-container {
-        margin-top: 20px;
-    }
+  .professor-card-column {
+    max-width: 100%;
+  }
 
-    .professor-compare-section {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        margin-top: 20px;
-    }
+  .professor-card {
+    max-width: 100%;
+  }
 
-    .professor-card {
-        width: 90%;
-        max-width: none;
-    }
+  .donut-chart-container,
+  .nightingale-chart-container,
+  .emoji-bar-chart-container {
+    max-width: 120px;
+    height: 120px;
+  }
 }

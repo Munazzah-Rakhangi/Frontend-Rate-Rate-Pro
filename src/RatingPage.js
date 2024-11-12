@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RatingPage.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const RatingPage = () => {
+const RatingPage = () => { 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { professor_id, courses = [] } = location.state || {}; // Retrieve professor_id and courses from location.state
+  
+  const [professorData, setProfessorData] = useState({
+    id: '',
+    name: '',
+    department: ''
+  });
+  const [courseData, setCourseData] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(''); // New state for selected course
   const [ratingData, setRatingData] = useState({
     wouldTakeAgain: '',
     academicAbility: 0,
@@ -13,8 +23,29 @@ const RatingPage = () => {
     userGPA: '',
     comments: '',
   });
+  const [showModal, setShowModal] = useState(false);
 
-  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  useEffect(() => {
+    // Retrieve professor data from local storage
+    const storedProfessorID = localStorage.getItem('professorID');
+    const storedProfessorName = localStorage.getItem('professorName');
+    const storedProfessorDepartment = localStorage.getItem('professorDepartment');
+    
+    // Set professor data from local storage if available
+    setProfessorData({
+      id: storedProfessorID || '',
+      name: storedProfessorName || '',
+      department: storedProfessorDepartment || ''
+    });
+
+    // Fetch professor-specific course data
+    fetch(`http://3.88.219.13:8000/v1/professor/${professor_id}`)
+      .then(response => response.json())
+      .then(data => {
+        setCourseData(data.courses); // Assuming `courses` array in response
+      })
+      .catch(error => console.error('Error fetching professor data:', error));
+  }, [professor_id]);
 
   const handleChange = (name, value) => {
     setRatingData({
@@ -25,15 +56,16 @@ const RatingPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowModal(true); // Show modal on submit
+    setShowModal(true); // Show confirmation modal on submit
 
-    // Send POST request to submit the rating data
+    // Submit the rating data via POST request
     fetch('http://3.88.219.13:8000/v1/rating/post/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        course: selectedCourse, // Include selected course in submission
         would_take_again: ratingData.wouldTakeAgain === 'yes' ? '1' : '0',
         academic_ability: ratingData.academicAbility,
         teaching_ability: ratingData.teachingQuality,
@@ -51,7 +83,7 @@ const RatingPage = () => {
       })
       .catch((error) => console.error('Error submitting rating:', error));
 
-    // Close the modal after a few seconds, clear form data, and don't navigate away
+    // Reset form and close modal after submission
     setTimeout(() => {
       setShowModal(false);
       setRatingData({
@@ -63,6 +95,7 @@ const RatingPage = () => {
         userGPA: '',
         comments: '',
       });
+      setSelectedCourse('');
     }, 3000); // Adjust the timeout as needed
   };
 
@@ -91,26 +124,39 @@ const RatingPage = () => {
   return (
     <div className="rating-page-container">
       <div className="top-row">
-        <button className="top-button home-button" onClick={() => navigate('/')}>Homepage</button>
-        <button className="top-button username-button">Username</button>
+        <button className="top-button rating-home-button" onClick={() => navigate('/')}>Homepage</button>
+        <button className="top-button rating-username-button">Username</button>
       </div>
 
       <div className="details-row">
         <div className="course-info">
-          <label>CourseID</label>
-          <input type="text" className="detail-input" />
-          <label>CourseName</label>
-          <input type="text" className="detail-input" />
-          <label>CourseStatus</label>
-          <input type="text" className="detail-input" />
+          <label>Course ID</label>
+          <input type="text" className="detail-input" value={courseData.length ? courseData[0].id : ''} readOnly />
+
+          {/* Course Name Dropdown */}
+          <label>Course Name</label>
+          <select
+            className="detail-input"
+            value={selectedCourse}
+            onChange={(e) => setSelectedCourse(e.target.value)}
+            required
+          >
+            <option value="" disabled>Select a course</option>
+            {courses.map((course, index) => (
+              <option key={index} value={course.name}>{course.name}</option>
+            ))}
+          </select>
+
+          <label>Course Status</label>
+          <input type="text" className="detail-input" value={courseData.length ? courseData[0].status : ''} readOnly />
         </div>
         <div className="prof-info">
-          <label>ProfID</label>
-          <input type="text" className="detail-input" />
+          <label>Prof ID</label>
+          <input type="text" className="detail-input" value={professorData.id} readOnly />
           <label>Name</label>
-          <input type="text" className="detail-input" />
+          <input type="text" className="detail-input" value={professorData.name} readOnly />
           <label>Department</label>
-          <input type="text" className="detail-input" />
+          <input type="text" className="detail-input" value={professorData.department} readOnly />
         </div>
       </div>
 
@@ -172,7 +218,7 @@ const RatingPage = () => {
         </button>
       </form>
 
-      {/* Modal Popup */}
+      {/* Modal Popup for confirmation */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">

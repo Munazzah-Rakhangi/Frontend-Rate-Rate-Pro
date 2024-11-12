@@ -36,7 +36,7 @@ const ProfessorResultsPage = () => {
 
         if (professor && professor.username) {
             professorName = professor.username;
-            professorDepartment = professor.department;
+            professorDepartment = professor.major;
             professorEmail = professor.email;
         } else {
             const storedProfessor = localStorage.getItem('selectedProfessor');
@@ -52,9 +52,44 @@ const ProfessorResultsPage = () => {
             }
         }
 
+        // Fetch professor data
         fetch('http://3.88.219.13:8000/v1/fetch/overallrating/?professor_id=1') 
             .then((response) => response.json())
             .then((data) => {
+                console.log("API Response:", data); // Debug log to inspect data
+
+                // Check if professor_id exists in the API response or in local storage
+                const professorId = (professor && professor.id) 
+                    || JSON.parse(localStorage.getItem('selectedProfessor'))?.id 
+                    || '1'; // Fallback to a default professor_id (e.g., '1')
+
+                // Save professor details to local storage
+                localStorage.setItem('professorID', professorId); // Store professor ID
+                localStorage.setItem('professorName', professorName); // Store professor Name
+                localStorage.setItem('professorDepartment', professorDepartment); // Store professor Department
+                localStorage.setItem('selectedProfessor', JSON.stringify({
+                    id: professorId,
+                    username: professorName,
+                    department: professorDepartment,
+                    email: professorEmail,
+                    overallRating: data.overall_rating,
+                    wouldTakeAgain: [data.would_take_again["1"], data.would_take_again["0"]],
+                    nightingaleData: [
+                        data.academic_ability,
+                        data.teaching_ability,
+                        data.interactions_with_students,
+                        data.hardness,
+                    ],
+                    emojiRatings: {
+                        '😡 Awful': 1,
+                        '😐 OK': 2,
+                        '🙂 Good': 4,
+                        '😄 Great': 3,
+                        '🤩 Awesome': 1,
+                    },
+                }));
+                
+                // Set professor data with courses and ratings
                 const fetchedData = {
                     name: professorName,
                     department: professorDepartment,
@@ -89,8 +124,8 @@ const ProfessorResultsPage = () => {
     }, [professor]);
 
     const handleRateClick = () => {
-        navigate('/rating', { state: { professor } });
-    };
+        navigate('/rating', { state: { professor, courses: professorData.courses } });
+    };    
 
     const handleCompareClick = () => {
         navigate('/professor-compare');
