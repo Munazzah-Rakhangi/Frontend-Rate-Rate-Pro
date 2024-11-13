@@ -27,11 +27,19 @@ const ProfessorComparePage = () => {
     };
 
     const chartOptions = {
-        maintainAspectRatio: true, // Preserve aspect ratio
+        maintainAspectRatio: true,
         responsive: true,
         plugins: {
-            legend: { display: false } // Remove legend for all charts
+            legend: { display: false }
+        },
+        layout: {
+            padding: 10
         }
+    };
+
+    const emojiBarChartOptions = {
+        ...chartOptions,
+        indexAxis: 'y' // Make the bar chart horizontal
     };
 
     const wouldTakeAgainData = {
@@ -82,7 +90,7 @@ const ProfessorComparePage = () => {
             </div>
 
             <div className="cards-container">
-                <div className="professor-card-column">
+                <div className="professor-card-column first-column">
                     {professorData && (
                         <div className="professor-card">
                             <h2 className="professor-card-heading">{professorData.username}</h2>
@@ -93,20 +101,22 @@ const ProfessorComparePage = () => {
                     )}
                     <div className="professor-card donut-card">
                         <h2>Would Take Again</h2>
-                        <div className="donut-chart-container">
+                        <div className="donut-chart-container first-donut">
                             <Doughnut data={wouldTakeAgainData} options={chartOptions} />
                         </div>
                     </div>
                     <div className="professor-card nightingale-card">
                         <h2>Nightingale Chart</h2>
-                        <div className="nightingale-chart-container">
+                        <div className="nightingale-chart-container first-nightingale">
                             <PolarArea data={nightingaleData} options={chartOptions} />
                         </div>
                     </div>
                     <div className="professor-card emoji-card">
-                        <h2>Emoji-Based Rating Distribution</h2>
-                        <div className="emoji-bar-chart-container">
-                            <Bar data={emojiBarData} options={chartOptions} />
+                        <div className="emoji-heading-container">
+                            <h2>Emoji-Based Rating Distribution</h2>
+                        </div>
+                        <div className="emoji-bar-chart-container first-emoji-bar">
+                            <Bar data={emojiBarData} options={emojiBarChartOptions} />
                         </div>
                     </div>
                 </div>
@@ -122,15 +132,23 @@ const ProfessorComparePage = () => {
                         </div>
                         <div className="professor-card donut-card">
                             <h2>Would Take Again</h2>
-                            <Doughnut data={wouldTakeAgainData} options={chartOptions} />
+                            <div className="donut-chart-container second-donut">
+                                <Doughnut data={wouldTakeAgainData} options={chartOptions} />
+                            </div>
                         </div>
                         <div className="professor-card nightingale-card">
                             <h2>Nightingale Chart</h2>
-                            <PolarArea data={nightingaleData} options={chartOptions} />
+                            <div className="nightingale-chart-container second-nightingale">
+                                <PolarArea data={nightingaleData} options={chartOptions} />
+                            </div>
                         </div>
                         <div className="professor-card emoji-card">
-                            <h2>Emoji-Based Rating Distribution</h2>
-                            <Bar data={emojiBarData} options={chartOptions} />
+                            <div className="emoji-heading-container">
+                                <h2>Emoji-Based Rating Distribution</h2>
+                            </div>
+                            <div className="emoji-bar-chart-container second-emoji-bar">
+                                <Bar data={emojiBarData} options={emojiBarChartOptions} />
+                            </div>
                         </div>
                     </div>
                 )}
@@ -146,15 +164,23 @@ const ProfessorComparePage = () => {
                         </div>
                         <div className="professor-card donut-card">
                             <h2>Would Take Again</h2>
-                            <Doughnut data={wouldTakeAgainData} options={chartOptions} />
+                            <div className="donut-chart-container third-donut">
+                                <Doughnut data={wouldTakeAgainData} options={chartOptions} />
+                            </div>
                         </div>
                         <div className="professor-card nightingale-card">
                             <h2>Nightingale Chart</h2>
-                            <PolarArea data={nightingaleData} options={chartOptions} />
+                            <div className="nightingale-chart-container third-nightingale">
+                                <PolarArea data={nightingaleData} options={chartOptions} />
+                            </div>
                         </div>
                         <div className="professor-card emoji-card">
-                            <h2>Emoji-Based Rating Distribution</h2>
-                            <Bar data={emojiBarData} options={chartOptions} />
+                            <div className="emoji-heading-container">
+                                <h2>Emoji-Based Rating Distribution</h2>
+                            </div>
+                            <div className="emoji-bar-chart-container third-emoji-bar">
+                                <Bar data={emojiBarData} options={emojiBarChartOptions} />
+                            </div>
                         </div>
                     </div>
                 )}
