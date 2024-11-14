@@ -30,11 +30,14 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --verbose  # Adds verbosity for better debugging
 
+      # Optional: Archive test results, if configured to store artifacts in test-results/ directory
       - name: Archive test results
         if: failure()
         uses: actions/upload-artifact@v3  # Updated to v3
         with:
           name: test-results
-          path: test-results/  # Adjust this path based on where test results are stored
+          path: test-results/  # Ensure Jest or test framework outputs here, or remove if unused
+
+          
