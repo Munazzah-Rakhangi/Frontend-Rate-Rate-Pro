@@ -117,6 +117,8 @@ const ProfessorResultsPage = () => {
                     comments: data.feedback,
                 };
                 setProfessorData(fetchedData);
+                // Store courses in localStorage
+                localStorage.setItem('courses', JSON.stringify(fetchedData.courses));
             })
             .catch((error) => {
                 console.error('Error fetching professor data:', error);
@@ -124,8 +126,10 @@ const ProfessorResultsPage = () => {
     }, [professor]);
 
     const handleRateClick = () => {
-        navigate('/rating', { state: { professor, courses: professorData.courses } });
-    };    
+        console.log("Navigating with courses:", professorData.courses); // Debugging log to verify course data
+        navigate('/rating', { state: { professor_id: professor.id, courses: professorData.courses } });
+    };
+        
 
     const handleCompareClick = () => {
         navigate('/professor-compare');
