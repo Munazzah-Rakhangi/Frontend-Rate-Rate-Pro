@@ -36,7 +36,7 @@ const ProfessorResultsPage = () => {
 
         if (professor && professor.username) {
             professorName = professor.username;
-            professorDepartment = professor.major;
+            professorDepartment = professor.department;
             professorEmail = professor.email;
         } else {
             const storedProfessor = localStorage.getItem('selectedProfessor');
@@ -53,7 +53,7 @@ const ProfessorResultsPage = () => {
         }
 
         // Fetch professor data
-        fetch('http://3.88.219.13:8000/v1/fetch/overallrating/?professor_id=1') 
+        fetch('http://54.209.124.57:8000/v1/fetch/overallrating/?professor_id=1') 
             .then((response) => response.json())
             .then((data) => {
                 console.log("API Response:", data); // Debug log to inspect data

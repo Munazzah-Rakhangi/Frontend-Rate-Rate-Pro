@@ -49,7 +49,7 @@ const LandingPage = () => {
 
         if (query.length > 1) { // Trigger API when more than 1 character is typed
             try {
-                const response = await fetch(`http://3.88.219.13:8000/v1/user/search/?query=${query}`);
+                const response = await fetch(`http://54.209.124.57:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
                     const data = await response.json();
                     setSearchResults(data); // Update the search results state
@@ -74,6 +74,8 @@ const LandingPage = () => {
         localStorage.setItem('selectedProfessor', JSON.stringify({
             username: professor.username,
             department: professor.major,  // Assuming 'major' is the department
+            email: professor.email,
+            id: professor.userid  // Assuming 'userid' is the unique ID
         }));
         
         // Navigate to the professor results page
@@ -88,6 +90,7 @@ const LandingPage = () => {
             },
         });
     };
+    
     
 
     return (

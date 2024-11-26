@@ -5,24 +5,15 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const RatingPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { professor_id, courses = [] } = location.state || {}; // Retrieve professor_id and courses from location.state
+    const { professor_id, courses = [] } = location.state || {}; 
 
-    console.log("Courses received:", courses);
-
-    // Initialize courseData with courses from location.state or fallback to localStorage
     const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
     const [courseData, setCourseData] = useState(courses.length > 0 ? courses : storedCourses);
-
-    const [professorData, setProfessorData] = useState({
-        id: '',
-        name: '',
-        department: ''
-    });
-    const [selectedCourse, setSelectedCourse] = useState(''); // State for selected course
-    const [selectedCourseDetails, setSelectedCourseDetails] = useState({ id: '', status: '' }); // State for selected course details
-
+    const [professorData, setProfessorData] = useState({ id: '', name: '', department: '' });
+    const [selectedCourse, setSelectedCourse] = useState('');
+    const [selectedCourseDetails, setSelectedCourseDetails] = useState({ id: '', status: '' });
     const [ratingData, setRatingData] = useState({
-        wouldTakeAgain: '',
+        overallRating: 4,
         academicAbility: 0,
         teachingQuality: 0,
         interactionWithStudents: 0,
@@ -31,39 +22,51 @@ const RatingPage = () => {
         comments: '',
     });
     const [showModal, setShowModal] = useState(false);
+    const [error, setError] = useState(null);
+
+    // Hardcoded inappropriate comments
+    const inappropriateComments = [
+        "This professor is a dumbass",
+        "This professor is a useless piece of crap",
+        "What an absolute asshole of a professor",
+        "The professor is a lazy bastard",
+        "The professor is a looser"
+    ];
 
     useEffect(() => {
-        console.log("Location state:", location.state); // Log location state to check if courses are available
-
-        // Retrieve professor data from local storage
         const storedProfessorID = localStorage.getItem('professorID');
         const storedProfessorName = localStorage.getItem('professorName');
         const storedProfessorDepartment = localStorage.getItem('professorDepartment');
         
-        // Set professor data from local storage if available
         setProfessorData({
             id: storedProfessorID || '',
             name: storedProfessorName || '',
             department: storedProfessorDepartment || ''
         });
 
-        // If courses are empty in location.state, fetch professor-specific course data if professor_id is provided
         if (professor_id && courses.length === 0) {
-            fetch(`http://3.88.219.13:8000/v1/professor/${professor_id}`)
+            fetch(`http://54.209.124.57:8000/v1/professor/courses/?professor_id=${professor_id}`)
                 .then(response => response.json())
                 .then(data => {
-                    setCourseData(data.courses); // Update courseData with fetched courses
+                    setCourseData(data);
+                    localStorage.setItem('courses', JSON.stringify(data));
                 })
                 .catch(error => console.error('Error fetching professor data:', error));
         }
-    }, [professor_id, location.state, courses]);
+    }, [professor_id, courses]);
+
+    const hardcodedCourses = {
+        "PSD": { id: 3, status: "Active" },
+        "Intro to AI": { id: 1, status: "Active" },
+        "Intro to ML": { id: 2, status: "Active" }
+    };
 
     const handleCourseSelect = (courseName) => {
         setSelectedCourse(courseName);
-        const courseDetails = courseData.find(course => course.name === courseName);
+        const courseDetails = hardcodedCourses[courseName] || { id: '', status: '' };
         setSelectedCourseDetails({
-            id: courseDetails?.id || '',
-            status: courseDetails?.status || ''
+            id: courseDetails.id,
+            status: courseDetails.status
         });
     };
 
@@ -76,17 +79,36 @@ const RatingPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setShowModal(true); // Show confirmation modal on submit
+        setError(null);
 
-        // Submit the rating data via POST request
+        // Validate comments field for inappropriate content
+        if (!ratingData.comments || ratingData.comments.trim() === '') {
+            setError('Comments cannot be empty.');
+            return;
+        }
+
+        // Check for inappropriate comments
+        const containsInappropriateComment = inappropriateComments.some(comment =>
+            ratingData.comments.toLowerCase().includes(comment.toLowerCase())
+        );
+
+        if (containsInappropriateComment) {
+            setError('Your comment contains inappropriate language. Please revise.');
+            return;
+        }
+
+        setShowModal(true);
+
         fetch('http://3.88.219.13:8000/v1/rating/post/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                course: selectedCourse, // Include selected course in submission
-                would_take_again: ratingData.wouldTakeAgain === 'yes' ? '1' : '0',
+                course_id: selectedCourseDetails.id,
+                student_id: 1,
+                professor_id: professorData.id,
+                overall_rating: ratingData.overallRating,
                 academic_ability: ratingData.academicAbility,
                 teaching_ability: ratingData.teachingQuality,
                 interactions_with_students: ratingData.interactionWithStudents,
@@ -95,29 +117,31 @@ const RatingPage = () => {
             }),
         })
             .then((response) => {
-                if (response.ok) {
-                    console.log('Rating submitted successfully!');
-                } else {
-                    console.error('Failed to submit rating');
+                if (!response.ok) {
+                    return response.json().then((data) => {
+                        setError(data.message || 'Failed to submit rating');
+                        throw new Error(data.message || 'Failed to submit rating');
+                    });
                 }
+                return response.json();
+            })
+            .then(() => {
+                console.log('Rating submitted successfully!');
+                setShowModal(true);
+                // Reset form fields on successful submission
+                setRatingData({
+                    overallRating: 4,
+                    academicAbility: 0,
+                    teachingQuality: 0,
+                    interactionWithStudents: 0,
+                    courseHardness: 0,
+                    userGPA: '',
+                    comments: '',
+                });
+                setSelectedCourse('');
+                setSelectedCourseDetails({ id: '', status: '' });
             })
             .catch((error) => console.error('Error submitting rating:', error));
-
-        // Reset form and close modal after submission
-        setTimeout(() => {
-            setShowModal(false);
-            setRatingData({
-                wouldTakeAgain: '',
-                academicAbility: 0,
-                teachingQuality: 0,
-                interactionWithStudents: 0,
-                courseHardness: 0,
-                userGPA: '',
-                comments: '',
-            });
-            setSelectedCourse('');
-            setSelectedCourseDetails({ id: '', status: '' });
-        }, 3000); // Adjust the timeout as needed
     };
 
     const sliderLabels = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
@@ -162,9 +186,9 @@ const RatingPage = () => {
                         required
                     >
                         <option value="" disabled>Select a course</option>
-                        {courseData.map((course, index) => (
-                            <option key={index} value={course.name}>{course.name}</option>
-                        ))}
+                        <option value="PSD">PSD</option>
+                        <option value="Intro to AI">Intro to AI</option>
+                        <option value="Intro to ML">Intro to ML</option>
                     </select>
 
                     <label>Course Status</label>
@@ -241,6 +265,31 @@ const RatingPage = () => {
                     <div className="modal-content">
                         <span role="img" aria-label="thumbs up">👍</span>
                         <p>Your rating has been successfully posted!</p>
+                        <button onClick={() => {
+                            // Close the modal and reset form data
+                            setShowModal(false);
+                            setRatingData({
+                                overallRating: 4,
+                                academicAbility: 0,
+                                teachingQuality: 0,
+                                interactionWithStudents: 0,
+                                courseHardness: 0,
+                                userGPA: '',
+                                comments: '',
+                            });
+                            setSelectedCourse('');
+                            setSelectedCourseDetails({ id: '', status: '' });
+                        }}>Close</button>
+                    </div>
+                </div>
+            )}
+
+            {error && (
+                <div className="modal-overlay">
+                    <div className="modal-content error">
+                        <span role="img" aria-label="error">⚠️</span>
+                        <p>{error}</p>
+                        <button onClick={() => setError(null)}>Close</button>
                     </div>
                 </div>
             )}

@@ -30,7 +30,7 @@ const SignupPage = () => {
 
         try {
             // API call to create a user
-            const response = await fetch('http://3.88.219.13:8000/v1/user/create/', {
+            const response = await fetch('http://54.209.124.57:8000/v1/user/create/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

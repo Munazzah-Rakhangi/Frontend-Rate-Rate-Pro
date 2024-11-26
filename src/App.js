@@ -36,7 +36,7 @@ const App = () => {
         setSearchQuery(query);
         if (query.trim() !== '') {
             try {
-                const response = await fetch(`http://3.88.219.13:8000/v1/user/search/?query=${query}`);
+                const response = await fetch(`http://54.209.124.57:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Search Results:", result);  // Log to check if department is present
@@ -56,19 +56,26 @@ const App = () => {
 
     // Handle when a professor is selected from the dropdown
     const handleResultSelect = (professor) => {
-        // Store selected professor data in local storage, including department
-        localStorage.setItem(
-            'selectedProfessor',
-            JSON.stringify({
-                id: professor.userid, // Assuming `userid` is the professor's ID
-                username: professor.username,
-                department: professor.major, // Add department here
-                email: professor.email,
-            })
-        );
+        // Store selected professor data in local storage
+        localStorage.setItem('selectedProfessor', JSON.stringify({
+            id: professor.userid,
+            username: professor.username,
+            department: professor.major, // Assuming 'major' is the department
+            email: professor.email
+        }));
 
-        // Navigate to the ProfessorResultsPage with professor details in state
-        navigate('/professor-results', { state: { professor } });
+        // Navigate to the professor results page with updated state
+        navigate('/professor-results', {
+            state: {
+                professor: {
+                    username: professor.username,
+                    department: professor.major, // Pass the department
+                    email: professor.email,
+                    id: professor.userid  // Assuming you have an ID
+                }
+            }
+        });
+
         setSearchQuery('');
         setSearchResults([]);
     };
