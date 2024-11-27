@@ -7,19 +7,57 @@ const SlidingMenu = () => {
     const initialTab = location.state?.selectedOption || 'Profile';
     const [activeTab, setActiveTab] = useState(initialTab);
     const [user, setUser] = useState(null);
+    const [userRatings, setUserRatings] = useState([]);
 
-    // Fetch user data from localStorage on component mount
+    // Initialize user ratings in localStorage
+    useEffect(() => {
+        const storedUserRatings = localStorage.getItem('userRatings');
+        if (!storedUserRatings) {
+            localStorage.setItem(
+                'userRatings',
+                JSON.stringify([
+                    {
+                        professorName: 'Professor John',
+                        overallRating: 4.5,
+                        wouldTakeAgain: true,
+                        gpa: '3.8',
+                        comments: 'Very knowledgeable and helpful.',
+                    },
+                    {
+                        professorName: 'Professor Jane',
+                        overallRating: 3.8,
+                        wouldTakeAgain: false,
+                        gpa: '3.2',
+                        comments: 'Good, but can improve communication.',
+                    },
+                ])
+            );
+        }
+    }, []);
+
+    // Fetch user and ratings data from localStorage
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
+        const storedRatings = localStorage.getItem('userRatings');
+
         if (storedUser) {
             try {
                 const parsedUser = JSON.parse(storedUser);
                 setUser(parsedUser);
             } catch (error) {
-                console.error("Error parsing stored user data:", error);
+                console.error('Error parsing stored user data:', error);
             }
         } else {
-            console.warn("No user data found in localStorage");
+            console.warn('No user data found in localStorage');
+        }
+
+        if (storedRatings) {
+            try {
+                const parsedRatings = JSON.parse(storedRatings);
+                setUserRatings(parsedRatings);
+            } catch (error) {
+                console.error('Error parsing user ratings:', error);
+            }
         }
     }, []);
 
@@ -59,6 +97,32 @@ const SlidingMenu = () => {
                 return (
                     <div className="tab-content">
                         <h2>Your Ratings</h2>
+                        <div className="ratings-list">
+                            {userRatings.length > 0 ? (
+                                userRatings.map((rating, index) => (
+                                    <div className="rating-card" key={index}>
+                                        <div className="rating-header">
+                                            <h3 className="professor-name">{rating.professorName}</h3>
+                                            <button className="edit-rating-button">Edit</button>
+                                        </div>
+                                        <hr className="divider" />
+                                        <div className="rating-body">
+                                            <div className="overall-rating">
+                                                <div className="rating-label"></div>
+                                                <div className="rating-value">{rating.overallRating}</div>
+                                            </div>
+                                            <div className="rating-details">
+                                                <p><strong>Would take again:</strong> {rating.wouldTakeAgain ? 'Yes' : 'No'}</p>
+                                                <p><strong>GPA:</strong> {rating.gpa || 'N/A'}</p>
+                                                <p><strong>Comments Given:</strong> {rating.comments || 'No comments provided'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No ratings provided yet.</p>
+                            )}
+                        </div>
                     </div>
                 );
             case 'Saved Professors':

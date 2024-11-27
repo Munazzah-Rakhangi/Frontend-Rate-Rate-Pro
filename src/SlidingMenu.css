@@ -29,6 +29,7 @@ body, html, #root {
     padding: 20px;
     width: 100%; /* Set width to 100% to ensure it adjusts to the screen */
     max-width: 800px; /* Set a maximum width for the container */
+    max-height: 90%; /* Decrease the height of the sliding menu container */
     background-color: #f2f2ff; /* Inside container color */
     border-radius: 20px;
     overflow-y: auto; /* Allow vertical scrolling if content overflows */
@@ -40,7 +41,7 @@ body, html, #root {
 /* Header styling */
 .sliding-header {
     width: 100%;
-    padding: 30px 0;
+    padding: 20px 0; /* Reduce padding for the header */
     text-align: center;
     background-color: #f2f2ff; /* Inside container color */
     border-top-left-radius: 20px;
@@ -49,7 +50,7 @@ body, html, #root {
 
 /* Adjust header title styling */
 .sliding-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem; /* Slightly reduce title size */
     font-weight: bold;
     color: black; /* Set font color to black */
     margin: 0;
@@ -59,7 +60,7 @@ body, html, #root {
 .tabs-container {
     display: flex;
     justify-content: space-around;
-    margin: 20px 0;
+    margin: 15px 0; /* Reduce spacing between tabs and content */
     width: 100%; /* Ensure the tabs container doesn't overflow */
     background-color: #f2f2ff; /* Inside container color */
     border-top-left-radius: 20px;
@@ -72,11 +73,11 @@ body, html, #root {
 
 /* Individual tab styling */
 .tab {
-    padding: 15px 30px;
+    padding: 12px 25px; /* Reduce padding for tabs */
     margin: 0;
     cursor: pointer;
     transition: color 0.3s ease, background-color 0.3s ease;
-    font-size: 1rem;
+    font-size: 0.95rem; /* Reduce tab font size slightly */
     color: black; /* Set font color to black */
     background-color: #f2f2ff; /* Inside container color */
     border-bottom: 2px solid transparent; /* Add transparent bottom border */
@@ -94,7 +95,7 @@ body, html, #root {
 .content-container {
     width: 100%;
     background: #f2f2ff; /* Inside container color */
-    padding: 20px;
+    padding: 15px; /* Reduce padding for content */
     border-radius: 0 0 20px 20px;
     margin-top: -1px;
     overflow-y: auto;
@@ -106,14 +107,14 @@ body, html, #root {
 .profile-section {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduce margin for profile section */
     color: black; /* Set font color to black */
 }
 
 .profile-info {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 8px 0; /* Reduce spacing between profile info rows */
     color: black; /* Set font color to black */
 }
 
@@ -129,19 +130,118 @@ body, html, #root {
 
 /* Edit button styling */
 .edit-button {
-    padding: 10px 20px;
+    padding: 8px 16px; /* Reduce button padding */
     background-color: #333;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 15px; /* Reduce margin for button */
     align-self: flex-end;
     font-family: 'Liberation Mono', monospace; /* Set font to Liberation Mono */
 }
 
 .edit-button:hover {
     background-color: #444;
+}
+
+/* Ratings List Styling */
+.ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Reduce gap between rating cards */
+}
+
+/* Individual Rating Card Styling */
+.rating-card {
+    background-color: #f2f2ff; /* Card background */
+    border: 1px solid black; /* Card border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 12px; /* Reduce card padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.rating-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem; /* Slightly reduce font size for headers */
+    font-weight: bold;
+    color: black;
+}
+
+.edit-rating-button {
+    padding: 5px 10px; /* Reduce button padding */
+    font-size: 0.9rem;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-rating-button:hover {
+    background-color: #0056b3;
+}
+
+.rating-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem; /* Slightly reduce font size for headers */
+    font-weight: bold;
+    color: black;
+    margin-bottom: 0; /* Remove any margin below the header */
+}
+
+.divider {
+    border: none;
+    border-top: 2px #000; /* Set the divider line color and thickness */
+    margin-top: -10px; /* Slightly shift it upwards */
+    margin-bottom: 20px; /* Add spacing below */
+    width: calc(100% + 90px); /* Extend the width beyond the container */
+    margin-left: 0; /* Keep it aligned with the left content */
+}
+
+
+/* Ratings Body Styling */
+.rating-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px; /* Reduce spacing between elements in the body */
+}
+
+.overall-rating {
+    flex: 0 0 auto; /* Prevent flexbox from stretching or shrinking */
+    text-align: center;
+    padding: 4px 6px; /* Reduce padding further */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2ff; /* Card background */
+    border: 1px solid black;
+    width: 50px; /* Set a fixed smaller width */
+    height: 35px; /* Reduce height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto; /* Center horizontally */
+}
+
+.overall-rating .rating-value {
+    font-size: 1.2rem; /* Increase font size for the number */
+    font-weight: bold; /* Make the number bold */
+    color: black; /* Ensure the number is clearly visible */
+}
+
+
+.rating-details {
+    flex: 2;
+    font-size: 0.9rem;
+    color: black;
+}
+
+.rating-details p {
+    margin: 4px 0; /* Reduce spacing for paragraph */
 }
 
 /* Responsive Design for smaller screens */
@@ -160,7 +260,12 @@ body, html, #root {
         font-size: 0.9rem;
     }
 
-    .edit-button {
-        padding: 8px 15px;
+    .edit-button,
+    .edit-rating-button {
+        padding: 8px 12px;
+    }
+
+    .rating-body {
+        flex-direction: column;
     }
 }

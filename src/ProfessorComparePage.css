@@ -94,8 +94,8 @@ body {
   background-color: #e6e6e6;
 }
 
-/* Search Dropdown Styling */
-.search-dropdown {
+/* Search Results Container Styling */
+.search-results-container {
   position: absolute;
   top: 45px;
   background-color: #fff;
@@ -108,7 +108,7 @@ body {
   z-index: 1000;
 }
 
-.search-dropdown-item {
+.search-results-item {
   padding: 10px;
   font-size: 1rem;
   cursor: pointer;
@@ -116,11 +116,11 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.search-dropdown-item:last-child {
+.search-results-item:last-child {
   border-bottom: none;
 }
 
-.search-dropdown-item:hover {
+.search-results-item:hover {
   background-color: #f7f7f7;
 }
 
