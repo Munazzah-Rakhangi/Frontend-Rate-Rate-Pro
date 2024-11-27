@@ -32,42 +32,21 @@ const ProfessorResultsPage = () => {
     const [professorData, setProfessorData] = useState(null);
     
     useEffect(() => {
-        let professorName, professorDepartment, professorEmail;
+        const fetchData = async () => {
+            try {
+                // Fetch professor data
+                const response = await fetch('http://54.209.124.57:8000/v1/fetch/overallrating/?professor_id=1');
+                const data = await response.json();
 
-        if (professor && professor.username) {
-            professorName = professor.username;
-            professorDepartment = professor.department;
-            professorEmail = professor.email;
-        } else {
-            const storedProfessor = localStorage.getItem('selectedProfessor');
-            if (storedProfessor) {
-                const { username, department, email } = JSON.parse(storedProfessor);
-                professorName = username;
-                professorDepartment = department;
-                professorEmail = email;
-            } else {
-                professorName = 'Unknown Professor';
-                professorDepartment = 'Unknown Department';
-                professorEmail = 'Unknown Email';
-            }
-        }
-
-        // Fetch professor data
-        fetch('http://54.209.124.57:8000/v1/fetch/overallrating/?professor_id=1') 
-            .then((response) => response.json())
-            .then((data) => {
                 console.log("API Response:", data); // Debug log to inspect data
 
-                // Check if professor_id exists in the API response or in local storage
-                const professorId = (professor && professor.id) 
-                    || JSON.parse(localStorage.getItem('selectedProfessor'))?.id 
-                    || '1'; // Fallback to a default professor_id (e.g., '1')
+                // Save professor details and API response to local storage
+                const professorId = professor?.id || '1'; // Use provided ID or fallback to default
+                const professorName = professor?.username || 'Unknown Professor';
+                const professorDepartment = professor?.department || 'Unknown Department';
+                const professorEmail = professor?.email || 'Unknown Email';
 
-                // Save professor details to local storage
-                localStorage.setItem('professorID', professorId); // Store professor ID
-                localStorage.setItem('professorName', professorName); // Store professor Name
-                localStorage.setItem('professorDepartment', professorDepartment); // Store professor Department
-                localStorage.setItem('selectedProfessor', JSON.stringify({
+                const storedData = {
                     id: professorId,
                     username: professorName,
                     department: professorDepartment,
@@ -80,16 +59,13 @@ const ProfessorResultsPage = () => {
                         data.interactions_with_students,
                         data.hardness,
                     ],
-                    emojiRatings: {
-                        '😡 Awful': 1,
-                        '😐 OK': 2,
-                        '🙂 Good': 4,
-                        '😄 Great': 3,
-                        '🤩 Awesome': 1,
-                    },
-                }));
-                
-                // Set professor data with courses and ratings
+                    courses: data.courses,
+                    comments: data.feedback,
+                };
+
+                localStorage.setItem('professorData', JSON.stringify(storedData));
+
+                // Set professor data to state
                 const fetchedData = {
                     name: professorName,
                     department: professorDepartment,
@@ -116,20 +92,20 @@ const ProfessorResultsPage = () => {
                     },
                     comments: data.feedback,
                 };
+
                 setProfessorData(fetchedData);
-                // Store courses in localStorage
-                localStorage.setItem('courses', JSON.stringify(fetchedData.courses));
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.error('Error fetching professor data:', error);
-            });
+            }
+        };
+
+        fetchData();
     }, [professor]);
 
     const handleRateClick = () => {
         console.log("Navigating with courses:", professorData.courses); // Debugging log to verify course data
         navigate('/rating', { state: { professor_id: professor.id, courses: professorData.courses } });
     };
-        
 
     const handleCompareClick = () => {
         navigate('/professor-compare');
@@ -244,7 +220,7 @@ const ProfessorResultsPage = () => {
                     <div className="professor-courses-section card">
                         <h2 className="card-title">List of Courses</h2>
                         <ul>
-                        {professorData.courses?.map((course, index) => (
+                            {professorData.courses?.map((course, index) => (
                                 <li key={index}>{course.name}</li>
                             ))}
                         </ul>
@@ -275,38 +251,6 @@ const ProfessorResultsPage = () => {
                                         <span className="score-value">{professorData.overallRating}</span>
                                         <span className="score-max">/5</span>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="chart-legends">
-                            <div className="donut-chart-legend">
-                                <div className="donut-legend-item">
-                                    <span className="donut-legend-color" style={{ backgroundColor: '#36A2EB' }}></span>
-                                    Yes
-                                </div>
-                                <div className="donut-legend-item">
-                                    <span className="donut-legend-color" style={{ backgroundColor: '#FF6384' }}></span>
-                                    No
-                                </div>
-                            </div>
-
-                            <div className="nightingale-chart-legend">
-                                <div className="nightingale-legend-item">
-                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#36A2EB' }}></span>
-                                    Academic Ability
-                                </div>
-                                <div className="nightingale-legend-item">
-                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#FF6384' }}></span>
-                                    Teaching Quality
-                                </div>
-                                <div className="nightingale-legend-item">
-                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#FFCE56' }}></span>
-                                    Interaction with Students
-                                </div>
-                                <div className="nightingale-legend-item">
-                                    <span className="nightingale-legend-color" style={{ backgroundColor: '#4BC0C0' }}></span>
-                                    Hardness
                                 </div>
                             </div>
                         </div>

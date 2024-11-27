@@ -107,7 +107,7 @@ const SlidingMenu = () => {
                                         </div>
                                         <hr className="divider" />
                                         <div className="rating-body">
-                                            <div className="overall-rating">
+                                            <div className="sliding-overall-rating">
                                                 <div className="rating-label"></div>
                                                 <div className="rating-value">{rating.overallRating}</div>
                                             </div>

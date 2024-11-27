@@ -5,10 +5,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const RatingPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { professor_id, courses = [] } = location.state || {}; 
+    const { professor_id, courses = [] } = location.state || {};
 
-    const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
-    const [courseData, setCourseData] = useState(courses.length > 0 ? courses : storedCourses);
+    const [courseData, setCourseData] = useState([]);
     const [professorData, setProfessorData] = useState({ id: '', name: '', department: '' });
     const [selectedCourse, setSelectedCourse] = useState('');
     const [selectedCourseDetails, setSelectedCourseDetails] = useState({ id: '', status: '' });
@@ -24,50 +23,50 @@ const RatingPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState(null);
 
-    // Hardcoded inappropriate comments
     const inappropriateComments = [
-        "This professor is a dumbass",
-        "This professor is a useless piece of crap",
-        "What an absolute asshole of a professor",
-        "The professor is a lazy bastard",
-        "The professor is a looser"
+        "dumbass", "useless", "asshole", "lazy", "loser"
     ];
 
     useEffect(() => {
+        // Load professor data from localStorage
         const storedProfessorID = localStorage.getItem('professorID');
         const storedProfessorName = localStorage.getItem('professorName');
         const storedProfessorDepartment = localStorage.getItem('professorDepartment');
-        
+        const storedProfessorData = JSON.parse(localStorage.getItem('professorData'));
+
         setProfessorData({
             id: storedProfessorID || '',
             name: storedProfessorName || '',
-            department: storedProfessorDepartment || ''
+            department: storedProfessorDepartment || '',
         });
 
-        if (professor_id && courses.length === 0) {
+        // Load courses from professorData in localStorage
+        if (storedProfessorData && storedProfessorData.courses) {
+            setCourseData(storedProfessorData.courses);
+        } else if (professor_id) {
             fetch(`http://54.209.124.57:8000/v1/professor/courses/?professor_id=${professor_id}`)
-                .then(response => response.json())
-                .then(data => {
+                .then((response) => response.json())
+                .then((data) => {
                     setCourseData(data);
                     localStorage.setItem('courses', JSON.stringify(data));
                 })
-                .catch(error => console.error('Error fetching professor data:', error));
+                .catch((error) => console.error('Error fetching course data:', error));
         }
-    }, [professor_id, courses]);
-
-    const hardcodedCourses = {
-        "PSD": { id: 3, status: "Active" },
-        "Intro to AI": { id: 1, status: "Active" },
-        "Intro to ML": { id: 2, status: "Active" }
-    };
+    }, [professor_id]);
 
     const handleCourseSelect = (courseName) => {
         setSelectedCourse(courseName);
-        const courseDetails = hardcodedCourses[courseName] || { id: '', status: '' };
-        setSelectedCourseDetails({
-            id: courseDetails.id,
-            status: courseDetails.status
-        });
+
+        // Find course details from courseData
+        const selectedCourse = courseData.find((course) => course.name === courseName);
+        if (selectedCourse) {
+            setSelectedCourseDetails({
+                id: selectedCourse.id,
+                status: selectedCourse.status,
+            });
+        } else {
+            setSelectedCourseDetails({ id: '', status: '' });
+        }
     };
 
     const handleChange = (name, value) => {
@@ -81,15 +80,14 @@ const RatingPage = () => {
         e.preventDefault();
         setError(null);
 
-        // Validate comments field for inappropriate content
+        // Validate comments
         if (!ratingData.comments || ratingData.comments.trim() === '') {
             setError('Comments cannot be empty.');
             return;
         }
 
-        // Check for inappropriate comments
-        const containsInappropriateComment = inappropriateComments.some(comment =>
-            ratingData.comments.toLowerCase().includes(comment.toLowerCase())
+        const containsInappropriateComment = inappropriateComments.some(keyword =>
+            ratingData.comments.toLowerCase().includes(keyword)
         );
 
         if (containsInappropriateComment) {
@@ -97,38 +95,52 @@ const RatingPage = () => {
             return;
         }
 
-        setShowModal(true);
+        // Retrieve user object from localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+        const studentId = user?.id; // Extract id from user object
 
-        fetch('http://3.88.219.13:8000/v1/rating/post/', {
+        if (!studentId) {
+            setError('User not logged in. Please log in to submit your rating.');
+            return;
+        }
+
+        // Prepare the payload for the POST API
+        const payload = {
+            course_id: selectedCourseDetails.id,
+            student_id: studentId, // Use the extracted studentId
+            professor_id: professorData.id,
+            overall_rating: ratingData.overallRating,
+            academic_ability: ratingData.academicAbility,
+            teaching_ability: ratingData.teachingQuality,
+            interactions_with_students: ratingData.interactionWithStudents,
+            hardness: ratingData.courseHardness,
+            feedback: ratingData.comments,
+        };
+
+        console.log('Submitting payload:', payload); // Debugging log to verify payload
+
+        // POST API call
+        fetch('http://54.209.124.57:8000/v1/rating/post/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                course_id: selectedCourseDetails.id,
-                student_id: 1,
-                professor_id: professorData.id,
-                overall_rating: ratingData.overallRating,
-                academic_ability: ratingData.academicAbility,
-                teaching_ability: ratingData.teachingQuality,
-                interactions_with_students: ratingData.interactionWithStudents,
-                hardness: ratingData.courseHardness,
-                feedback: ratingData.comments,
-            }),
+            body: JSON.stringify(payload),
         })
             .then((response) => {
                 if (!response.ok) {
                     return response.json().then((data) => {
-                        setError(data.message || 'Failed to submit rating');
-                        throw new Error(data.message || 'Failed to submit rating');
+                        setError(data.message || 'Your comment contains inappropriate language.');
+                        throw new Error(data.message || 'Your comment contains inappropriate language.');
                     });
                 }
                 return response.json();
             })
-            .then(() => {
-                console.log('Rating submitted successfully!');
+            .then((data) => {
+                console.log('API response:', data); // Log API response
                 setShowModal(true);
-                // Reset form fields on successful submission
+
+                // Reset the form fields
                 setRatingData({
                     overallRating: 4,
                     academicAbility: 0,
@@ -141,7 +153,9 @@ const RatingPage = () => {
                 setSelectedCourse('');
                 setSelectedCourseDetails({ id: '', status: '' });
             })
-            .catch((error) => console.error('Error submitting rating:', error));
+            .catch((error) => {
+                console.error('Error submitting rating:', error);
+            });
     };
 
     const sliderLabels = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
@@ -169,7 +183,9 @@ const RatingPage = () => {
     return (
         <div className="rating-page-container">
             <div className="top-row">
-                <button className="top-button rating-home-button" onClick={() => navigate('/')}>Homepage</button>
+                <button className="top-button rating-home-button" onClick={() => navigate('/')}>
+                    Homepage
+                </button>
                 <button className="top-button rating-username-button">Username</button>
             </div>
 
@@ -186,14 +202,17 @@ const RatingPage = () => {
                         required
                     >
                         <option value="" disabled>Select a course</option>
-                        <option value="PSD">PSD</option>
-                        <option value="Intro to AI">Intro to AI</option>
-                        <option value="Intro to ML">Intro to ML</option>
+                        {courseData.map((course, index) => (
+                            <option key={index} value={course.name}>
+                                {course.name}
+                            </option>
+                        ))}
                     </select>
 
                     <label>Course Status</label>
                     <input type="text" className="detail-input" value={selectedCourseDetails.status} readOnly />
                 </div>
+
                 <div className="prof-info">
                     <label>Prof ID</label>
                     <input type="text" className="detail-input" value={professorData.id} readOnly />
@@ -254,6 +273,7 @@ const RatingPage = () => {
                         value={ratingData.comments}
                         onChange={(e) => handleChange('comments', e.target.value)}
                         placeholder="Write your comments"
+                        required
                     />
                 </div>
 
@@ -265,21 +285,7 @@ const RatingPage = () => {
                     <div className="modal-content">
                         <span role="img" aria-label="thumbs up">👍</span>
                         <p>Your rating has been successfully posted!</p>
-                        <button onClick={() => {
-                            // Close the modal and reset form data
-                            setShowModal(false);
-                            setRatingData({
-                                overallRating: 4,
-                                academicAbility: 0,
-                                teachingQuality: 0,
-                                interactionWithStudents: 0,
-                                courseHardness: 0,
-                                userGPA: '',
-                                comments: '',
-                            });
-                            setSelectedCourse('');
-                            setSelectedCourseDetails({ id: '', status: '' });
-                        }}>Close</button>
+                        <button onClick={() => setShowModal(false)}>Close</button>
                     </div>
                 </div>
             )}

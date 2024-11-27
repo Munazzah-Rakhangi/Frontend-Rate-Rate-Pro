@@ -154,8 +154,8 @@ body, html, #root {
 
 /* Individual Rating Card Styling */
 .rating-card {
-    background-color: #f2f2ff; /* Card background */
-    border: 1px solid black; /* Card border */
+    background-color: #ffffff; /* Card background */
+    border: 1px solid #000000; /* Card border */
     border-radius: 8px; /* Rounded corners */
     padding: 12px; /* Reduce card padding */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
@@ -184,22 +184,12 @@ body, html, #root {
     background-color: #0056b3;
 }
 
-.rating-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem; /* Slightly reduce font size for headers */
-    font-weight: bold;
-    color: black;
-    margin-bottom: 0; /* Remove any margin below the header */
-}
-
 .divider {
     border: none;
     border-top: 2px #000; /* Set the divider line color and thickness */
-    margin-top: -10px; /* Slightly shift it upwards */
-    margin-bottom: 20px; /* Add spacing below */
-    width: calc(100% + 90px); /* Extend the width beyond the container */
+    margin-top: -2px; /* Slightly shift it upwards */
+    margin-bottom: 10px; /* Add spacing below */
+    width: calc(100% + 50px); /* Extend the width beyond the container */
     margin-left: 0; /* Keep it aligned with the left content */
 }
 
@@ -211,28 +201,27 @@ body, html, #root {
     gap: 12px; /* Reduce spacing between elements in the body */
 }
 
-.overall-rating {
+.sliding-overall-rating {
     flex: 0 0 auto; /* Prevent flexbox from stretching or shrinking */
     text-align: center;
-    padding: 4px 6px; /* Reduce padding further */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f2f2ff; /* Card background */
-    border: 1px solid black;
-    width: 50px; /* Set a fixed smaller width */
-    height: 35px; /* Reduce height */
+    font-weight: bold;
+    padding: 4px 6px; /* Padding */
+    border: 1px solid black; /* Border color set to black */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f9f9f9; /* Background color for contrast */
+    width: 40px; /* Fixed width */
+    height: 35px; /* Fixed height */
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Align items vertically */
+    justify-content: center; /* Center items horizontally */
     margin: 0 auto; /* Center horizontally */
 }
 
-.overall-rating .rating-value {
-    font-size: 1.2rem; /* Increase font size for the number */
+.sliding-overall-ratin .rating-label {
+    font-size: 1.5rem; /* Font size for the number */
     font-weight: bold; /* Make the number bold */
-    color: black; /* Ensure the number is clearly visible */
+    color: black; /* Text color */
 }
-
 
 .rating-details {
     flex: 2;
