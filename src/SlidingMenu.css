@@ -60,24 +60,23 @@ body, html, #root {
 .tabs-container {
     display: flex;
     justify-content: space-around;
-    margin: 15px 0; /* Reduce spacing between tabs and content */
     width: 100%; /* Ensure the tabs container doesn't overflow */
     background-color: #f2f2ff; /* Inside container color */
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    overflow: hidden;
+    padding: 10px 0; /* Add padding to ensure tabs are fully visible */
     position: sticky;
     top: 0; /* Set top to 0 to ensure it stays in place */
     z-index: 9;
+    margin-bottom: 10px; /* Add margin between tabs and content */
+    border-bottom: 2px solid black; /* Add border to separate tabs from content */
 }
 
 /* Individual tab styling */
 .tab {
-    padding: 12px 25px; /* Reduce padding for tabs */
+    padding: 12px 20px; /* Adjust padding for tabs */
     margin: 0;
     cursor: pointer;
     transition: color 0.3s ease, background-color 0.3s ease;
-    font-size: 0.95rem; /* Reduce tab font size slightly */
+    font-size: 1rem; /* Adjust tab font size */
     color: black; /* Set font color to black */
     background-color: #f2f2ff; /* Inside container color */
     border-bottom: 2px solid transparent; /* Add transparent bottom border */
@@ -95,10 +94,10 @@ body, html, #root {
 .content-container {
     width: 100%;
     background: #f2f2ff; /* Inside container color */
-    padding: 15px; /* Reduce padding for content */
+    padding: 10px; /* Add padding for spacing */
     border-radius: 0 0 20px 20px;
-    margin-top: -1px;
-    overflow-y: auto;
+    margin-top: 20px; /* Push the content container slightly downwards */
+    overflow-y: auto; /* Allow vertical scrolling for large content */
     flex-grow: 1;
     color: black; /* Set font color to black */
 }
@@ -157,8 +156,9 @@ body, html, #root {
     background-color: #ffffff; /* Card background */
     border: 1px solid #000000; /* Card border */
     border-radius: 8px; /* Rounded corners */
-    padding: 12px; /* Reduce card padding */
+    padding: 12px; /* Adjust card padding */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow: visible; /* Ensure no text is cut off */
 }
 
 .rating-header {
@@ -184,21 +184,11 @@ body, html, #root {
     background-color: #0056b3;
 }
 
-.divider {
-    border: none;
-    border-top: 2px #000; /* Set the divider line color and thickness */
-    margin-top: -2px; /* Slightly shift it upwards */
-    margin-bottom: 10px; /* Add spacing below */
-    width: calc(100% + 50px); /* Extend the width beyond the container */
-    margin-left: 0; /* Keep it aligned with the left content */
-}
-
-
 /* Ratings Body Styling */
 .rating-body {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px; /* Reduce spacing between elements in the body */
+    flex-wrap: wrap; /* Allow items to wrap if necessary */
+    gap: 12px; /* Adjust spacing between elements */
 }
 
 .sliding-overall-rating {
@@ -217,20 +207,19 @@ body, html, #root {
     margin: 0 auto; /* Center horizontally */
 }
 
-.sliding-overall-ratin .rating-label {
-    font-size: 1.5rem; /* Font size for the number */
-    font-weight: bold; /* Make the number bold */
-    color: black; /* Text color */
-}
-
+/* Rating Details */
 .rating-details {
     flex: 2;
     font-size: 0.9rem;
     color: black;
+    white-space: normal; /* Ensure text wraps */
+    overflow: visible; /* Ensure no content is cut off */
+    line-height: 1.5; /* Adjust line height for better readability */
 }
 
 .rating-details p {
-    margin: 4px 0; /* Reduce spacing for paragraph */
+    margin: 4px 0; /* Adjust spacing for paragraphs */
+    word-break: break-word; /* Ensure long words break properly */
 }
 
 /* Responsive Design for smaller screens */

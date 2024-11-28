@@ -8,38 +8,12 @@ const SlidingMenu = () => {
     const [activeTab, setActiveTab] = useState(initialTab);
     const [user, setUser] = useState(null);
     const [userRatings, setUserRatings] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    // Initialize user ratings in localStorage
-    useEffect(() => {
-        const storedUserRatings = localStorage.getItem('userRatings');
-        if (!storedUserRatings) {
-            localStorage.setItem(
-                'userRatings',
-                JSON.stringify([
-                    {
-                        professorName: 'Professor John',
-                        overallRating: 4.5,
-                        wouldTakeAgain: true,
-                        gpa: '3.8',
-                        comments: 'Very knowledgeable and helpful.',
-                    },
-                    {
-                        professorName: 'Professor Jane',
-                        overallRating: 3.8,
-                        wouldTakeAgain: false,
-                        gpa: '3.2',
-                        comments: 'Good, but can improve communication.',
-                    },
-                ])
-            );
-        }
-    }, []);
-
-    // Fetch user and ratings data from localStorage
+    // Fetch user data from localStorage
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
-        const storedRatings = localStorage.getItem('userRatings');
-
         if (storedUser) {
             try {
                 const parsedUser = JSON.parse(storedUser);
@@ -50,16 +24,33 @@ const SlidingMenu = () => {
         } else {
             console.warn('No user data found in localStorage');
         }
-
-        if (storedRatings) {
-            try {
-                const parsedRatings = JSON.parse(storedRatings);
-                setUserRatings(parsedRatings);
-            } catch (error) {
-                console.error('Error parsing user ratings:', error);
-            }
-        }
     }, []);
+
+    // Fetch ratings from the API
+    useEffect(() => {
+        if (user?.id) {
+            setIsLoading(true);
+            console.log('Fetching ratings for user ID:', user.id);
+            fetch(`http://54.209.124.57:8000/v1/ratings/student/?student_id=${user.id}`)
+                .then((response) => {
+                    console.log('API response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log('Fetched ratings data:', data);
+                    setUserRatings(data);
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.error('Error fetching ratings:', error);
+                    setError('Failed to load ratings. Please try again later.');
+                    setIsLoading(false);
+                });
+        }
+    }, [user?.id]);
 
     const renderContent = () => {
         switch (activeTab) {
@@ -97,32 +88,47 @@ const SlidingMenu = () => {
                 return (
                     <div className="tab-content">
                         <h2>Your Ratings</h2>
-                        <div className="ratings-list">
-                            {userRatings.length > 0 ? (
-                                userRatings.map((rating, index) => (
-                                    <div className="rating-card" key={index}>
+                        {isLoading ? (
+                            <p>Loading ratings...</p>
+                        ) : error ? (
+                            <p>{error}</p>
+                        ) : userRatings.length > 0 ? (
+                            <div className="ratings-list">
+                                {userRatings.map((rating) => (
+                                    <div className="rating-card" key={rating.id}>
                                         <div className="rating-header">
-                                            <h3 className="professor-name">{rating.professorName}</h3>
+                                            <h3 className="professor-name">
+                                                Professor ID: {rating.professor_id}
+                                            </h3>
                                             <button className="edit-rating-button">Edit</button>
                                         </div>
                                         <hr className="divider" />
                                         <div className="rating-body">
                                             <div className="sliding-overall-rating">
                                                 <div className="rating-label"></div>
-                                                <div className="rating-value">{rating.overallRating}</div>
+                                                <div className="rating-value">{rating.overall_rating}</div>
                                             </div>
                                             <div className="rating-details">
-                                                <p><strong>Would take again:</strong> {rating.wouldTakeAgain ? 'Yes' : 'No'}</p>
-                                                <p><strong>GPA:</strong> {rating.gpa || 'N/A'}</p>
-                                                <p><strong>Comments Given:</strong> {rating.comments || 'No comments provided'}</p>
+                                                <p>
+                                                    <strong>Would take again:</strong>{' '}
+                                                    {rating.would_take_again === '1' ? 'Yes' : 'No'}
+                                                </p>
+                                                <p>
+                                                    <strong>Feedback:</strong>{' '}
+                                                    {rating.feedback || 'No feedback provided'}
+                                                </p>
+                                                {/* <p>
+                                                    <strong>Timestamp:</strong>{' '}
+                                                    {new Date(rating.timestamp).toLocaleString()}
+                                                </p> */}
                                             </div>
                                         </div>
                                     </div>
-                                ))
-                            ) : (
-                                <p>No ratings provided yet.</p>
-                            )}
-                        </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p>No ratings provided yet.</p>
+                        )}
                     </div>
                 );
             case 'Saved Professors':
@@ -170,9 +176,7 @@ const SlidingMenu = () => {
                     </div>
                 </div>
 
-                <div className="content-container">
-                    {renderContent()}
-                </div>
+                <div className="content-container">{renderContent()}</div>
             </div>
         </div>
     );
