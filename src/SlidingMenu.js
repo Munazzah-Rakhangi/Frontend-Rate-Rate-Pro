@@ -31,7 +31,7 @@ const SlidingMenu = () => {
         if (user?.id) {
             setIsLoading(true);
             console.log('Fetching ratings for user ID:', user.id);
-            fetch(`http://54.209.124.57:8000/v1/ratings/student/?student_id=${user.id}`)
+            fetch(`http://54.145.162.200:8000/v1/ratings/student/?student_id=${user.id}`)
                 .then((response) => {
                     console.log('API response status:', response.status);
                     if (!response.ok) {
@@ -98,30 +98,22 @@ const SlidingMenu = () => {
                                     <div className="rating-card" key={rating.id}>
                                         <div className="rating-header">
                                             <h3 className="professor-name">
-                                                Professor ID: {rating.professor_id}
+                                                Professor Name: {rating.professor_info.name}
                                             </h3>
-                                            <button className="edit-rating-button">Edit</button>
                                         </div>
-                                        <hr className="divider" />
-                                        <div className="rating-body">
-                                            <div className="sliding-overall-rating">
-                                                <div className="rating-label"></div>
-                                                <div className="rating-value">{rating.overall_rating}</div>
-                                            </div>
-                                            <div className="rating-details">
-                                                <p>
-                                                    <strong>Would take again:</strong>{' '}
-                                                    {rating.would_take_again === '1' ? 'Yes' : 'No'}
-                                                </p>
-                                                <p>
-                                                    <strong>Feedback:</strong>{' '}
-                                                    {rating.feedback || 'No feedback provided'}
-                                                </p>
-                                                {/* <p>
-                                                    <strong>Timestamp:</strong>{' '}
-                                                    {new Date(rating.timestamp).toLocaleString()}
-                                                </p> */}
-                                            </div>
+                                        <div className="rating-details">
+                                            <p>
+                                                <strong>Professor Email:</strong>{' '}
+                                                {rating.professor_info.email}
+                                            </p>
+                                            <p>
+                                                <strong>Would take again:</strong>{' '}
+                                                {rating.would_take_again === '1' ? 'Yes' : 'No'}
+                                            </p>
+                                            <p>
+                                                <strong>Feedback:</strong>{' '}
+                                                {rating.feedback || 'No feedback provided'}
+                                            </p>
                                         </div>
                                     </div>
                                 ))}

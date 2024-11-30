@@ -44,7 +44,7 @@ const RatingPage = () => {
         if (storedProfessorData && storedProfessorData.courses) {
             setCourseData(storedProfessorData.courses);
         } else if (professor_id) {
-            fetch(`http://54.209.124.57:8000/v1/professor/courses/?professor_id=${professor_id}`)
+            fetch(`http://54.145.162.200:8000/v1/professor/courses/?professor_id=${professor_id}`)
                 .then((response) => response.json())
                 .then((data) => {
                     setCourseData(data);
@@ -120,7 +120,7 @@ const RatingPage = () => {
         console.log('Submitting payload:', payload); // Debugging log to verify payload
 
         // POST API call
-        fetch('http://54.209.124.57:8000/v1/rating/post/', {
+        fetch('http://54.145.162.200:8000/v1/rating/post/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -49,7 +49,7 @@ const LandingPage = () => {
 
         if (query.length > 1) { // Trigger API when more than 1 character is typed
             try {
-                const response = await fetch(`http://54.209.124.57:8000/v1/user/search/?query=${query}`);
+                const response = await fetch(`http://54.145.162.200:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
                     const data = await response.json();
                     setSearchResults(data); // Update the search results state

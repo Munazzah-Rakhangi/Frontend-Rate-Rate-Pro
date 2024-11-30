@@ -36,7 +36,7 @@ const App = () => {
         setSearchQuery(query);
         if (query.trim() !== '') {
             try {
-                const response = await fetch(`http://54.209.124.57:8000/v1/user/search/?query=${query}`);
+                const response = await fetch(`http://54.145.162.200:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Search Results:", result);  // Log to check if department is present

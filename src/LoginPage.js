@@ -27,7 +27,7 @@ const LoginPage = () => {
 
             // API request to login
             const response = await fetchWithTimeout(
-                'http://54.209.124.57:8000/v1/user/login/',
+                'http://54.145.162.200:8000/v1/user/login/',
                 {
                     method: 'POST',
                     headers: {

@@ -35,7 +35,7 @@ const ProfessorComparePage = () => {
         setSearchQuery(query);
         if (query.trim() !== '') {
             try {
-                const response = await fetch(`http://54.209.124.57:8000/v1/user/search/?query=${query}`);
+                const response = await fetch(`http://54.145.162.200:8000/v1/user/search/?query=${query}`);
                 if (response.ok) {
                     const result = await response.json();
                     console.log('Search Results:', result); // Log results for debugging
@@ -63,9 +63,9 @@ const ProfessorComparePage = () => {
                 department: professor.major,
                 email: professor.email,
                 overallRating: professor.overallRating || 4.0,
-                wouldTakeAgain: [70, 30], // Dummy "Would Take Again" data
-                nightingaleData: [4.5, 3.5, 4.0, 3.8], // Dummy Nightingale Chart data
-                emojiRatings: { '😀': 40, '🙂': 30, '😐': 15, '☹️': 10, '😡': 5 } // Dummy Emoji Ratings
+                wouldTakeAgain: [70, 30], 
+                nightingaleData: [4.5, 3.5, 4.0, 3.8], 
+                emojiRatings: { '😀': 40, '🙂': 30, '😐': 15, '☹️': 10, '😡': 5 } 
             }]);
         }
         setSearchQuery('');

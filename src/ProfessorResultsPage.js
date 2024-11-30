@@ -35,7 +35,7 @@ const ProfessorResultsPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch professor data
-                const response = await fetch('http://54.209.124.57:8000/v1/fetch/overallrating/?professor_id=1');
+                const response = await fetch('http://54.145.162.200:8000/v1/fetch/overallrating/?professor_id=1');
                 const data = await response.json();
 
                 console.log("API Response:", data); // Debug log to inspect data
@@ -108,7 +108,9 @@ const ProfessorResultsPage = () => {
     };
 
     const handleCompareClick = () => {
-        navigate('/professor-compare');
+        if (professorData) {
+            navigate('/professor-compare', { state: { professorData } });
+        }   
     };
 
     const donutData = {
